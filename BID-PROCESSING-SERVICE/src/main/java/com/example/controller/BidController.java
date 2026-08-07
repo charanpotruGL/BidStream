@@ -7,7 +7,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -19,7 +21,9 @@ public class BidController {
     private final BidService bidService;
 
     @PostMapping
-    public ResponseEntity<BidResponse> placeBid(@Valid @RequestBody CreateBidRequest request) {
+    public ResponseEntity<BidResponse> placeBid(@Valid @RequestBody CreateBidRequest request,
+                                                @AuthenticationPrincipal Long userId) {
+        request.setBidderId(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(bidService.placeBid(request));
     }
 
@@ -34,7 +38,11 @@ public class BidController {
     }
 
     @GetMapping("/bidder/{bidderId}")
-    public ResponseEntity<List<BidResponse>> getBidsByBidder(@PathVariable Long bidderId) {
+    public ResponseEntity<List<BidResponse>> getBidsByBidder(@PathVariable Long bidderId,
+                                                             @AuthenticationPrincipal Long userId) {
+        if (userId == null || !bidderId.equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You do not have permission to view these bids");
+        }
         return ResponseEntity.ok(bidService.getBidsByBidder(bidderId));
     }
 

@@ -1,0 +1,231 @@
+﻿2026-08-07 11:01:23.975  ========================================================================
+2026-08-07 11:01:23.981  BidStream API Test Suite started
+2026-08-07 11:01:23.983  Base URL: http://localhost:8080
+2026-08-07 11:01:23.984  Log file: C:\Users\charan.potru\Downloads\Blackbox-Bidstream\BidStream_TEST\scripts\api-tests-20260807-110123.log
+2026-08-07 11:01:23.986  ========================================================================
+2026-08-07 11:01:24.090  ========================================================================
+2026-08-07 11:01:24.091  REQUEST  POST /api/auth/register
+2026-08-07 11:01:24.094    Body: {
+    "username":  "tester_110123988",
+    "fullName":  "Test User",
+    "email":  "tester_110123988@example.com",
+    "role":  "USER",
+    "password":  "secret123"
+}
+2026-08-07 11:01:25.629  RESPONSE 201 Created
+2026-08-07 11:01:25.633    Body: {"token":"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0ZXJfMTEwMTIzOTg4IiwidXNlcklkIjoxMywicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODYwODA2ODUsImV4cCI6MTc4NjE2NzA4NX0.4LqpCyLcDXF0kyJx8udSc2aQkj_V0UYFJT-KYOyeptLRFhchu3u4e4o9suW00doh","tokenType":"Bearer","userId":13,"username":"tester_110123988","email":"tester_110123988@example.com","role":"USER","expiresIn":86400000}
+2026-08-07 11:01:25.689  ========================================================================
+2026-08-07 11:01:25.691  REQUEST  POST /api/auth/register
+2026-08-07 11:01:25.692    Body: {
+    "username":  "tester_110123988",
+    "fullName":  "Test User",
+    "email":  "tester_110123988@example.com",
+    "role":  "USER",
+    "password":  "secret123"
+}
+2026-08-07 11:01:25.751  RESPONSE 409 Conflict
+2026-08-07 11:01:25.752    Body: {"timestamp":"2026-08-07T11:01:25.719126","status":409,"error":"Conflict","message":"Username already exists: tester_110123988","path":"/api/auth/register","fieldErrors":null}
+2026-08-07 11:01:25.759  ========================================================================
+2026-08-07 11:01:25.760  REQUEST  POST /api/auth/register
+2026-08-07 11:01:25.761    Body: {
+    "username":  "x_110123988",
+    "email":  "not-an-email",
+    "password":  "secret123"
+}
+2026-08-07 11:01:25.803  RESPONSE 400 Bad Request
+2026-08-07 11:01:25.805    Body: {"timestamp":"2026-08-07T11:01:25.789167","status":400,"error":"Bad Request","message":"Validation failed","path":"/api/auth/register","fieldErrors":{"email":"Email must be valid"}}
+2026-08-07 11:01:25.812  ========================================================================
+2026-08-07 11:01:25.814  REQUEST  POST /api/auth/login
+2026-08-07 11:01:25.816    Body: {
+    "usernameOrEmail":  "tester_110123988@example.com",
+    "password":  "secret123"
+}
+2026-08-07 11:01:25.965  RESPONSE 200 OK
+2026-08-07 11:01:25.967    Body: {"token":"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ0ZXN0ZXJfMTEwMTIzOTg4IiwidXNlcklkIjoxMywicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODYwODA2ODUsImV4cCI6MTc4NjE2NzA4NX0.4LqpCyLcDXF0kyJx8udSc2aQkj_V0UYFJT-KYOyeptLRFhchu3u4e4o9suW00doh","tokenType":"Bearer","userId":13,"username":"tester_110123988","email":"tester_110123988@example.com","role":"USER","expiresIn":86400000}
+2026-08-07 11:01:25.969  ========================================================================
+2026-08-07 11:01:25.970  REQUEST  POST /api/auth/login
+2026-08-07 11:01:25.971    Body: {
+    "usernameOrEmail":  "tester_110123988@example.com",
+    "password":  "wrongpass"
+}
+2026-08-07 11:01:26.055  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.057    Body: {"timestamp":"2026-08-07T11:01:26.0492853","status":401,"error":"Unauthorized","message":"Invalid password","path":"/api/auth/login","fieldErrors":null}
+2026-08-07 11:01:26.062  ========================================================================
+2026-08-07 11:01:26.064  REQUEST  GET /api/users/13
+2026-08-07 11:01:26.066    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.239  RESPONSE 200 OK
+2026-08-07 11:01:26.241    Body: {"id":13,"username":"tester_110123988","email":"tester_110123988@example.com","fullName":"Test User","role":"USER","active":true,"createdAt":"2026-08-07T11:01:25.46146"}
+2026-08-07 11:01:26.244  ========================================================================
+2026-08-07 11:01:26.245  REQUEST  GET /api/users/13
+2026-08-07 11:01:26.250  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.254  ========================================================================
+2026-08-07 11:01:26.255  REQUEST  GET /api/users/13
+2026-08-07 11:01:26.256    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.262  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.267  ========================================================================
+2026-08-07 11:01:26.268  REQUEST  GET /api/users/username/tester_110123988
+2026-08-07 11:01:26.269    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.318  RESPONSE 200 OK
+2026-08-07 11:01:26.319    Body: {"id":13,"username":"tester_110123988","email":"tester_110123988@example.com","fullName":"Test User","role":"USER","active":true,"createdAt":"2026-08-07T11:01:25.46146"}
+2026-08-07 11:01:26.322  ========================================================================
+2026-08-07 11:01:26.323  REQUEST  GET /api/users/99999999
+2026-08-07 11:01:26.324    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.357  RESPONSE 404 Not Found
+2026-08-07 11:01:26.359    Body: {"timestamp":"2026-08-07T11:01:26.35274","status":404,"error":"Not Found","message":"User not found with id: 99999999","path":"/api/users/99999999","fieldErrors":null}
+2026-08-07 11:01:26.369  ========================================================================
+2026-08-07 11:01:26.370  REQUEST  POST /api/auctions
+2026-08-07 11:01:26.371    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.372    Body: {
+    "description":  "A rare vase",
+    "startingPrice":  100,
+    "sellerId":  13,
+    "endTime":  "2026-08-07T13:01:26",
+    "title":  "Antique Vase 110123988",
+    "startTime":  "2026-08-07T12:01:26"
+}
+2026-08-07 11:01:26.526  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.543  ========================================================================
+2026-08-07 11:01:26.546  REQUEST  POST /api/auctions
+2026-08-07 11:01:26.548    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.550    Body: {
+    "title":  "Bad",
+    "endTime":  "2026-08-07T10:01:26",
+    "startingPrice":  10,
+    "startTime":  "2026-08-07T13:01:26",
+    "sellerId":  1
+}
+2026-08-07 11:01:26.577  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.583  ========================================================================
+2026-08-07 11:01:26.584  REQUEST  GET /api/auctions
+2026-08-07 11:01:26.585    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.610  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.616  ========================================================================
+2026-08-07 11:01:26.617  REQUEST  GET /api/auctions?page=0&size=5&sort=title&direction=desc
+2026-08-07 11:01:26.618    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.641  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.646  ========================================================================
+2026-08-07 11:01:26.647  REQUEST  GET /api/auctions/
+2026-08-07 11:01:26.649    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.669  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.673  ========================================================================
+2026-08-07 11:01:26.675  REQUEST  GET /api/auctions/status/ACTIVE
+2026-08-07 11:01:26.676    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.697  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.701  ========================================================================
+2026-08-07 11:01:26.703  REQUEST  GET /api/auctions/seller/13
+2026-08-07 11:01:26.707    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.728  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.733  ========================================================================
+2026-08-07 11:01:26.734  REQUEST  GET /api/auctions/stats/active-count
+2026-08-07 11:01:26.735    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.756  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.760  ========================================================================
+2026-08-07 11:01:26.763  REQUEST  GET /api/auctions/99999999
+2026-08-07 11:01:26.764    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.784  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.788  ========================================================================
+2026-08-07 11:01:26.790  REQUEST  PUT /api/auctions/
+2026-08-07 11:01:26.791    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.792    Body: {
+    "title":  "Antique Vase UPDATED"
+}
+2026-08-07 11:01:26.812  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.816  ========================================================================
+2026-08-07 11:01:26.817  REQUEST  POST /api/auctions//start
+2026-08-07 11:01:26.818    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.832  RESPONSE 400 Bad Request
+2026-08-07 11:01:26.837  ========================================================================
+2026-08-07 11:01:26.838  REQUEST  POST /api/auctions//start
+2026-08-07 11:01:26.839    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.844  RESPONSE 400 Bad Request
+2026-08-07 11:01:26.849  ========================================================================
+2026-08-07 11:01:26.850  REQUEST  POST /api/auctions//close
+2026-08-07 11:01:26.851    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.855  RESPONSE 400 Bad Request
+2026-08-07 11:01:26.860  ========================================================================
+2026-08-07 11:01:26.861  REQUEST  POST /api/auctions//close
+2026-08-07 11:01:26.864    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.867  RESPONSE 400 Bad Request
+2026-08-07 11:01:26.871  ========================================================================
+2026-08-07 11:01:26.872  REQUEST  POST /api/auctions
+2026-08-07 11:01:26.873    Body: {
+    "description":  "A rare vase",
+    "startingPrice":  100,
+    "sellerId":  13,
+    "endTime":  "2026-08-07T13:01:26",
+    "title":  "Antique Vase 110123988",
+    "startTime":  "2026-08-07T12:01:26"
+}
+2026-08-07 11:01:26.880  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.883  ========================================================================
+2026-08-07 11:01:26.885  REQUEST  POST /api/auctions
+2026-08-07 11:01:26.886    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.887    Body: {
+    "description":  "For bids",
+    "startingPrice":  50,
+    "sellerId":  13,
+    "endTime":  "2026-08-07T13:01:26",
+    "title":  "Bid Target 110123988",
+    "startTime":  "2026-08-07T12:01:26"
+}
+2026-08-07 11:01:26.910  RESPONSE 401 Unauthorized
+2026-08-07 11:01:26.915  ========================================================================
+2026-08-07 11:01:26.916  REQUEST  POST /api/auctions//start
+2026-08-07 11:01:26.917    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.922  RESPONSE 400 Bad Request
+2026-08-07 11:01:26.925  ========================================================================
+2026-08-07 11:01:26.926  REQUEST  POST /api/bids
+2026-08-07 11:01:26.928    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:26.930    Body: {
+    "amount":  60,
+    "bidderId":  13,
+    "auctionId":  null
+}
+2026-08-07 11:01:27.025  RESPONSE 503 Service Unavailable
+2026-08-07 11:01:27.034  ========================================================================
+2026-08-07 11:01:27.036  REQUEST  POST /api/bids
+2026-08-07 11:01:27.037    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.039    Body: {
+    "amount":  55,
+    "bidderId":  13,
+    "auctionId":  null
+}
+2026-08-07 11:01:27.062  RESPONSE 503 Service Unavailable
+2026-08-07 11:01:27.068  ========================================================================
+2026-08-07 11:01:27.070  REQUEST  POST /api/bids
+2026-08-07 11:01:27.071    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.072    Body: {
+    "amount":  0,
+    "bidderId":  13,
+    "auctionId":  null
+}
+2026-08-07 11:01:27.087  RESPONSE 503 Service Unavailable
+2026-08-07 11:01:27.091  ========================================================================
+2026-08-07 11:01:27.093  REQUEST  POST /api/bids
+2026-08-07 11:01:27.094    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.096    Body: {
+    "amount":  75,
+    "bidderId":  13,
+    "auctionId":  null
+}
+2026-08-07 11:01:27.113  RESPONSE 503 Service Unavailable
+2026-08-07 11:01:27.117  ========================================================================
+2026-08-07 11:01:27.119  REQUEST  GET /api/bids/
+2026-08-07 11:01:27.120    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.136  RESPONSE 503 Service Unavailable
+2026-08-07 11:01:27.141  ========================================================================
+2026-08-07 11:01:27.142  REQUEST  GET /api/bids/auction/
+2026-08-07 11:01:27.144    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.159  RESPONSE 503 Service Unavailable
+2026-08-07 11:01:27.166  ========================================================================
+2026-08-07 11:01:27.167  REQUEST  GET /api/bids/bidder/13
+2026-08-07 11:01:27.169    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.184  RESPONSE 503 Service Unavailable
+2026-08-07 11:01:27.189  ========================================================================
+2026-08-07 11:01:27.191  REQUEST  GET /api/bids/auction//highest
+2026-08-07 11:01:27.193    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.199  RESPONSE 400 Bad Request
+2026-08-07 11:01:27.202  ========================================================================
+2026-08-07 11:01:27.204  REQUEST  GET /api/bids/auction//highest
+2026-08-07 11:01:27.206    Header: Authorization: Bearer <redacted>
+2026-08-07 11:01:27.211  RESPONSE 400 Bad Request

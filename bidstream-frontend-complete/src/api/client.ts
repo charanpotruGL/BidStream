@@ -141,8 +141,14 @@ export class APIClient {
     return response.data;
   }
 
-  public async getAuctionsByStatus(status: string): Promise<PaginatedResponse<Auction>> {
-    const response = await this.client.get<PaginatedResponse<Auction>>(`/api/auctions/status/${status}`);
+  public async getAuctionsByStatus(
+    status: string,
+    params?: AuctionQueryParams
+  ): Promise<PaginatedResponse<Auction>> {
+    const response = await this.client.get<PaginatedResponse<Auction>>(
+      `/api/auctions/status/${status}`,
+      { params }
+    );
     return response.data;
   }
 

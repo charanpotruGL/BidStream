@@ -25,7 +25,7 @@ public class BidEventListener {
                     .userId(event.getBidderId())
                     .notificationType(Notification.NotificationType.BID_PLACED)
                     .title("Bid Placed")
-                    .message("Your bid of $" + event.getAmount() + " was placed on auction " + event.getAuctionId() + ".")
+                    .message("Your bid of $" + event.getAmount() + " was placed on auction " + auctionRef(event) + ".")
                     .build();
             notificationRepository.save(notification);
             log.info("Notification created for bid-placed event: bidId={}", event.getBidId());
@@ -42,12 +42,18 @@ public class BidEventListener {
                     .userId(event.getBidderId())
                     .notificationType(Notification.NotificationType.BID_OUTBID)
                     .title("You've Been Outbid")
-                    .message("Your bid on auction " + event.getAuctionId() + " has been outbid.")
+                    .message("Your bid on auction " + auctionRef(event) + " has been outbid.")
                     .build();
             notificationRepository.save(notification);
             log.info("Notification created for bid-outbid event: bidId={}", event.getBidId());
         } catch (Exception e) {
             log.error("Failed to process bid-outbid event for notification: {}", message, e);
         }
+    }
+
+    private String auctionRef(BidEvent event) {
+        return event.getAuctionTitle() != null
+                ? "'" + event.getAuctionTitle() + "'"
+                : String.valueOf(event.getAuctionId());
     }
 }

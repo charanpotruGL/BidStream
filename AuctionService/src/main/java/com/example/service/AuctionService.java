@@ -7,11 +7,12 @@ import com.example.model.Auction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AuctionService {
 
-    AuctionResponse createAuction(CreateAuctionRequest request);
+    AuctionResponse createAuction(CreateAuctionRequest request, Long sellerId);
 
     AuctionResponse getAuctionById(Long id);
 
@@ -23,13 +24,15 @@ public interface AuctionService {
 
     long getActiveAuctionCount();
 
-    AuctionResponse updateAuction(Long id, UpdateAuctionRequest request);
+    AuctionResponse updateAuction(Long id, UpdateAuctionRequest request, Long sellerId);
 
-    AuctionResponse startAuction(Long id);
+    AuctionResponse startAuction(Long id, Long sellerId);
 
-    AuctionResponse closeAuction(Long id);
+    AuctionResponse closeAuction(Long id, Long sellerId);
 
-    void deleteAuction(Long id);
+    void deleteAuction(Long id, Long sellerId);
 
     Auction getAuctionEntity(Long id);
+
+    void recordBid(Long auctionId, Long bidId, Long bidderId, BigDecimal amount);
 }

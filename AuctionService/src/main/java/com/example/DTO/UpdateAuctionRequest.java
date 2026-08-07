@@ -1,6 +1,7 @@
 package com.example.DTO;
 
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class UpdateAuctionRequest {
     private String description;
 
     @DecimalMin(value = "0.01", message = "Starting price must be greater than 0")
+    @Digits(integer = 13, fraction = 2, message = "Starting price must have at most 2 decimal places")
     private BigDecimal startingPrice;
 
     private LocalDateTime startTime;

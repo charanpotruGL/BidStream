@@ -1,0 +1,256 @@
+﻿2026-08-07 11:13:18.694  ========================================================================
+2026-08-07 11:13:18.700  BidStream API Test Suite started
+2026-08-07 11:13:18.701  Base URL: http://localhost:8080
+2026-08-07 11:13:18.702  Log file: C:\Users\charan.potru\Downloads\Blackbox-Bidstream\BidStream_TEST\scripts\api-tests-20260807-111318.log
+2026-08-07 11:13:18.703  ========================================================================
+2026-08-07 11:13:18.769  ========================================================================
+2026-08-07 11:13:18.770  REQUEST  POST /api/auth/register
+2026-08-07 11:13:18.773    Body: {
+    "username":  "tester_111318705",
+    "fullName":  "Test User",
+    "email":  "tester_111318705@example.com",
+    "role":  "USER",
+    "password":  "secret123"
+}
+2026-08-07 11:13:19.578  RESPONSE 201 Created
+2026-08-07 11:13:19.580    Body: {"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJfMTExMzE4NzA1IiwidXNlcklkIjoxNCwicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODYwODEzOTksImV4cCI6MTc4NjE2Nzc5OX0.pmePlaUrH9Rn_73FcAF0y_LBa7LMkEOlmYJwvuSIDtA","tokenType":"Bearer","userId":14,"username":"tester_111318705","email":"tester_111318705@example.com","role":"USER","expiresIn":86400000}
+2026-08-07 11:13:19.634  ========================================================================
+2026-08-07 11:13:19.635  REQUEST  POST /api/auth/register
+2026-08-07 11:13:19.636    Body: {
+    "username":  "tester_111318705",
+    "fullName":  "Test User",
+    "email":  "tester_111318705@example.com",
+    "role":  "USER",
+    "password":  "secret123"
+}
+2026-08-07 11:13:19.683  RESPONSE 409 Conflict
+2026-08-07 11:13:19.684    Body: {"timestamp":"2026-08-07T11:13:19.6578592","status":409,"error":"Conflict","message":"Username already exists: tester_111318705","path":"/api/auth/register","fieldErrors":null}
+2026-08-07 11:13:19.690  ========================================================================
+2026-08-07 11:13:19.692  REQUEST  POST /api/auth/register
+2026-08-07 11:13:19.693    Body: {
+    "username":  "x_111318705",
+    "email":  "not-an-email",
+    "password":  "secret123"
+}
+2026-08-07 11:13:19.722  RESPONSE 400 Bad Request
+2026-08-07 11:13:19.723    Body: {"timestamp":"2026-08-07T11:13:19.7167088","status":400,"error":"Bad Request","message":"Validation failed","path":"/api/auth/register","fieldErrors":{"email":"Email must be valid"}}
+2026-08-07 11:13:19.728  ========================================================================
+2026-08-07 11:13:19.729  REQUEST  POST /api/auth/login
+2026-08-07 11:13:19.730    Body: {
+    "usernameOrEmail":  "tester_111318705@example.com",
+    "password":  "secret123"
+}
+2026-08-07 11:13:19.864  RESPONSE 200 OK
+2026-08-07 11:13:19.865    Body: {"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXJfMTExMzE4NzA1IiwidXNlcklkIjoxNCwicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODYwODEzOTksImV4cCI6MTc4NjE2Nzc5OX0.pmePlaUrH9Rn_73FcAF0y_LBa7LMkEOlmYJwvuSIDtA","tokenType":"Bearer","userId":14,"username":"tester_111318705","email":"tester_111318705@example.com","role":"USER","expiresIn":86400000}
+2026-08-07 11:13:19.869  ========================================================================
+2026-08-07 11:13:19.870  REQUEST  POST /api/auth/login
+2026-08-07 11:13:19.871    Body: {
+    "usernameOrEmail":  "tester_111318705@example.com",
+    "password":  "wrongpass"
+}
+2026-08-07 11:13:19.953  RESPONSE 401 Unauthorized
+2026-08-07 11:13:19.955    Body: {"timestamp":"2026-08-07T11:13:19.9488929","status":401,"error":"Unauthorized","message":"Invalid password","path":"/api/auth/login","fieldErrors":null}
+2026-08-07 11:13:19.960  ========================================================================
+2026-08-07 11:13:19.961  REQUEST  GET /api/users/14
+2026-08-07 11:13:19.964    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:20.070  RESPONSE 200 OK
+2026-08-07 11:13:20.073    Body: {"id":14,"username":"tester_111318705","email":"tester_111318705@example.com","fullName":"Test User","role":"USER","active":true,"createdAt":"2026-08-07T11:13:19.437505"}
+2026-08-07 11:13:20.077  ========================================================================
+2026-08-07 11:13:20.079  REQUEST  GET /api/users/14
+2026-08-07 11:13:20.084  RESPONSE 401 Unauthorized
+2026-08-07 11:13:20.087  ========================================================================
+2026-08-07 11:13:20.088  REQUEST  GET /api/users/14
+2026-08-07 11:13:20.089    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:20.095  RESPONSE 401 Unauthorized
+2026-08-07 11:13:20.098  ========================================================================
+2026-08-07 11:13:20.099  REQUEST  GET /api/users/username/tester_111318705
+2026-08-07 11:13:20.100    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:20.146  RESPONSE 200 OK
+2026-08-07 11:13:20.147    Body: {"id":14,"username":"tester_111318705","email":"tester_111318705@example.com","fullName":"Test User","role":"USER","active":true,"createdAt":"2026-08-07T11:13:19.437505"}
+2026-08-07 11:13:20.150  ========================================================================
+2026-08-07 11:13:20.151  REQUEST  GET /api/users/99999999
+2026-08-07 11:13:20.152    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:20.179  RESPONSE 404 Not Found
+2026-08-07 11:13:20.180    Body: {"timestamp":"2026-08-07T11:13:20.174123","status":404,"error":"Not Found","message":"User not found with id: 99999999","path":"/api/users/99999999","fieldErrors":null}
+2026-08-07 11:13:20.188  ========================================================================
+2026-08-07 11:13:20.191  REQUEST  POST /api/auctions
+2026-08-07 11:13:20.193    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:20.194    Body: {
+    "description":  "A rare vase",
+    "startingPrice":  100,
+    "sellerId":  14,
+    "endTime":  "2026-08-07T13:13:20",
+    "title":  "Antique Vase 111318705",
+    "startTime":  "2026-08-07T12:13:20"
+}
+2026-08-07 11:13:21.015  RESPONSE 201 Created
+2026-08-07 11:13:21.018    Body: {"id":12,"title":"Antique Vase 111318705","description":"A rare vase","sellerId":14,"startingPrice":100,"currentPrice":100,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"PENDING","createdAt":"2026-08-07T11:13:20.4310106"}
+2026-08-07 11:13:21.032  ========================================================================
+2026-08-07 11:13:21.034  REQUEST  POST /api/auctions
+2026-08-07 11:13:21.036    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.039    Body: {
+    "title":  "Bad",
+    "endTime":  "2026-08-07T10:13:20",
+    "startingPrice":  10,
+    "startTime":  "2026-08-07T13:13:20",
+    "sellerId":  1
+}
+2026-08-07 11:13:21.096  RESPONSE 400 Bad Request
+2026-08-07 11:13:21.099    Body: {"timestamp":"2026-08-07T11:13:21.0821096","status":400,"error":"Bad Request","message":"Validation failed","path":"/api/auctions","fieldErrors":{"endTime":"End time must be in the future"}}
+2026-08-07 11:13:21.115  ========================================================================
+2026-08-07 11:13:21.116  REQUEST  GET /api/auctions
+2026-08-07 11:13:21.119    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.252  RESPONSE 200 OK
+2026-08-07 11:13:21.254    Body: {"content":[{"id":1,"title":"Antique Vase 144442051","description":"A rare vase","sellerId":5,"startingPrice":100.00,"currentPrice":100.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T15:44:42","endTime":"2026-08-06T16:44:42","status":"CLOSED","createdAt":"2026-08-06T14:44:43.109293"},{"id":2,"title":"Antique Vase","description":"Hand-painted antique vase in excellent shape.","sellerId":1,"startingPrice":250.00,"currentPrice":250.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T10:58:34.28679","endTime":"2026-08-13T10:58:34.28679","status":"ACTIVE","createdAt":"2026-08-07T10:58:34.28679"},{"id":3,"title":"Bid Target 144526930","description":"For bids","sellerId":7,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T15:45:27","endTime":"2026-08-06T16:45:27","status":"CLOSED","createdAt":"2026-08-06T14:45:28.190323"},{"id":5,"title":"Bid Target 145117964","description":"For bids","sellerId":8,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T15:51:18","endTime":"2026-08-06T16:51:18","status":"CLOSED","createdAt":"2026-08-06T14:51:19.248734"},{"id":7,"title":"Bid Target 150120041","description":"For bids","sellerId":9,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T16:01:20","endTime":"2026-08-06T17:01:20","status":"CLOSED","createdAt":"2026-08-06T15:01:21.609176"},{"id":9,"title":"Bid Target 154311939","description":"For bids","sellerId":10,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T16:43:12","endTime":"2026-08-06T17:43:12","status":"CLOSED","createdAt":"2026-08-06T15:43:13.374174"},{"id":10,"title":"PC","description":"PC model 2005","sellerId":12,"startingPrice":500.00,"currentPrice":500.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T16:36:00","endTime":"2026-08-06T16:37:00","status":"CLOSED","createdAt":"2026-08-06T16:34:43.981665"},{"id":11,"title":"PC","description":"PC2006","sellerId":12,"startingPrice":200.00,"currentPrice":200.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T09:40:00","endTime":"2026-08-07T09:42:00","status":"CLOSED","createdAt":"2026-08-07T09:37:41.32578"},{"id":12,"title":"Antique Vase 111318705","description":"A rare vase","sellerId":14,"startingPrice":100.00,"currentPrice":100.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"PENDING","createdAt":"2026-08-07T11:13:20.431011"}],"empty":false,"first":true,"last":true,"number":0,"numberOfElements":9,"pageable":{"offset":0,"pageNumber":0,"pageSize":10,"paged":true,"sort":{"empty":false,"sorted":true,"unsorted":false},"unpaged":false},"size":10,"sort":{"empty":false,"sorted":true,"unsorted":false},"totalElements":9,"totalPages":1}
+2026-08-07 11:13:21.261  ========================================================================
+2026-08-07 11:13:21.263  REQUEST  GET /api/auctions?page=0&size=5&sort=title&direction=desc
+2026-08-07 11:13:21.265    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.356  RESPONSE 200 OK
+2026-08-07 11:13:21.359    Body: {"content":[{"id":11,"title":"PC","description":"PC2006","sellerId":12,"startingPrice":200.00,"currentPrice":200.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T09:40:00","endTime":"2026-08-07T09:42:00","status":"CLOSED","createdAt":"2026-08-07T09:37:41.32578"},{"id":10,"title":"PC","description":"PC model 2005","sellerId":12,"startingPrice":500.00,"currentPrice":500.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T16:36:00","endTime":"2026-08-06T16:37:00","status":"CLOSED","createdAt":"2026-08-06T16:34:43.981665"},{"id":9,"title":"Bid Target 154311939","description":"For bids","sellerId":10,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T16:43:12","endTime":"2026-08-06T17:43:12","status":"CLOSED","createdAt":"2026-08-06T15:43:13.374174"},{"id":7,"title":"Bid Target 150120041","description":"For bids","sellerId":9,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T16:01:20","endTime":"2026-08-06T17:01:20","status":"CLOSED","createdAt":"2026-08-06T15:01:21.609176"},{"id":5,"title":"Bid Target 145117964","description":"For bids","sellerId":8,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T15:51:18","endTime":"2026-08-06T16:51:18","status":"CLOSED","createdAt":"2026-08-06T14:51:19.248734"}],"empty":false,"first":true,"last":false,"number":0,"numberOfElements":5,"pageable":{"offset":0,"pageNumber":0,"pageSize":5,"paged":true,"sort":{"empty":false,"sorted":true,"unsorted":false},"unpaged":false},"size":5,"sort":{"empty":false,"sorted":true,"unsorted":false},"totalElements":9,"totalPages":2}
+2026-08-07 11:13:21.365  ========================================================================
+2026-08-07 11:13:21.367  REQUEST  GET /api/auctions/12
+2026-08-07 11:13:21.370    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.435  RESPONSE 200 OK
+2026-08-07 11:13:21.438    Body: {"id":12,"title":"Antique Vase 111318705","description":"A rare vase","sellerId":14,"startingPrice":100.00,"currentPrice":100.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"PENDING","createdAt":"2026-08-07T11:13:20.431011"}
+2026-08-07 11:13:21.445  ========================================================================
+2026-08-07 11:13:21.447  REQUEST  GET /api/auctions/status/ACTIVE
+2026-08-07 11:13:21.450    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.499  RESPONSE 200 OK
+2026-08-07 11:13:21.501    Body: {"content":[{"id":2,"title":"Antique Vase","description":"Hand-painted antique vase in excellent shape.","sellerId":1,"startingPrice":250.00,"currentPrice":250.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-06T10:58:34.28679","endTime":"2026-08-13T10:58:34.28679","status":"ACTIVE","createdAt":"2026-08-07T10:58:34.28679"}],"empty":false,"first":true,"last":true,"number":0,"numberOfElements":1,"pageable":{"offset":0,"pageNumber":0,"pageSize":10,"paged":true,"sort":{"empty":true,"sorted":false,"unsorted":true},"unpaged":false},"size":10,"sort":{"empty":true,"sorted":false,"unsorted":true},"totalElements":1,"totalPages":1}
+2026-08-07 11:13:21.507  ========================================================================
+2026-08-07 11:13:21.510  REQUEST  GET /api/auctions/seller/14
+2026-08-07 11:13:21.512    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.561  RESPONSE 200 OK
+2026-08-07 11:13:21.563    Body: [{"id":12,"title":"Antique Vase 111318705","description":"A rare vase","sellerId":14,"startingPrice":100.00,"currentPrice":100.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"PENDING","createdAt":"2026-08-07T11:13:20.431011"}]
+2026-08-07 11:13:21.566  ========================================================================
+2026-08-07 11:13:21.567  REQUEST  GET /api/auctions/stats/active-count
+2026-08-07 11:13:21.569    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.618  RESPONSE 200 OK
+2026-08-07 11:13:21.619    Body: 1
+2026-08-07 11:13:21.624  ========================================================================
+2026-08-07 11:13:21.626  REQUEST  GET /api/auctions/99999999
+2026-08-07 11:13:21.627    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.652  RESPONSE 404 Not Found
+2026-08-07 11:13:21.654    Body: {"timestamp":"2026-08-07T11:13:21.6461894","status":404,"error":"Not Found","message":"Auction not found with id: 99999999","path":"/api/auctions/99999999","fieldErrors":null}
+2026-08-07 11:13:21.660  ========================================================================
+2026-08-07 11:13:21.661  REQUEST  PUT /api/auctions/12
+2026-08-07 11:13:21.662    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.663    Body: {
+    "title":  "Antique Vase UPDATED"
+}
+2026-08-07 11:13:21.729  RESPONSE 200 OK
+2026-08-07 11:13:21.731    Body: {"id":12,"title":"Antique Vase UPDATED","description":"A rare vase","sellerId":14,"startingPrice":100.00,"currentPrice":100.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"PENDING","createdAt":"2026-08-07T11:13:20.431011"}
+2026-08-07 11:13:21.734  ========================================================================
+2026-08-07 11:13:21.736  REQUEST  POST /api/auctions/12/start
+2026-08-07 11:13:21.737    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.783  RESPONSE 200 OK
+2026-08-07 11:13:21.785    Body: {"id":12,"title":"Antique Vase UPDATED","description":"A rare vase","sellerId":14,"startingPrice":100.00,"currentPrice":100.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"ACTIVE","createdAt":"2026-08-07T11:13:20.431011"}
+2026-08-07 11:13:21.790  ========================================================================
+2026-08-07 11:13:21.792  REQUEST  POST /api/auctions/12/start
+2026-08-07 11:13:21.793    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.817  RESPONSE 400 Bad Request
+2026-08-07 11:13:21.819    Body: {"timestamp":"2026-08-07T11:13:21.8121684","status":400,"error":"Bad Request","message":"Only PENDING auctions can be started","path":"/api/auctions/12/start","fieldErrors":null}
+2026-08-07 11:13:21.823  ========================================================================
+2026-08-07 11:13:21.825  REQUEST  POST /api/auctions/12/close
+2026-08-07 11:13:21.826    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.874  RESPONSE 200 OK
+2026-08-07 11:13:21.876    Body: {"id":12,"title":"Antique Vase UPDATED","description":"A rare vase","sellerId":14,"startingPrice":100.00,"currentPrice":100.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"CLOSED","createdAt":"2026-08-07T11:13:20.431011"}
+2026-08-07 11:13:21.880  ========================================================================
+2026-08-07 11:13:21.881  REQUEST  POST /api/auctions/12/close
+2026-08-07 11:13:21.883    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.904  RESPONSE 400 Bad Request
+2026-08-07 11:13:21.907    Body: {"timestamp":"2026-08-07T11:13:21.9003157","status":400,"error":"Bad Request","message":"Only ACTIVE auctions can be closed","path":"/api/auctions/12/close","fieldErrors":null}
+2026-08-07 11:13:21.912  ========================================================================
+2026-08-07 11:13:21.913  REQUEST  POST /api/auctions
+2026-08-07 11:13:21.915    Body: {
+    "description":  "A rare vase",
+    "startingPrice":  100,
+    "sellerId":  14,
+    "endTime":  "2026-08-07T13:13:20",
+    "title":  "Antique Vase 111318705",
+    "startTime":  "2026-08-07T12:13:20"
+}
+2026-08-07 11:13:21.919  RESPONSE 401 Unauthorized
+2026-08-07 11:13:21.926  ========================================================================
+2026-08-07 11:13:21.927  REQUEST  POST /api/auctions
+2026-08-07 11:13:21.928    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:21.930    Body: {
+    "description":  "For bids",
+    "startingPrice":  50,
+    "sellerId":  14,
+    "endTime":  "2026-08-07T13:13:20",
+    "title":  "Bid Target 111318705",
+    "startTime":  "2026-08-07T12:13:20"
+}
+2026-08-07 11:13:21.971  RESPONSE 201 Created
+2026-08-07 11:13:21.974    Body: {"id":13,"title":"Bid Target 111318705","description":"For bids","sellerId":14,"startingPrice":50,"currentPrice":50,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"PENDING","createdAt":"2026-08-07T11:13:21.9507985"}
+2026-08-07 11:13:21.977  ========================================================================
+2026-08-07 11:13:21.978  REQUEST  POST /api/auctions/13/start
+2026-08-07 11:13:21.980    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:22.020  RESPONSE 200 OK
+2026-08-07 11:13:22.023    Body: {"id":13,"title":"Bid Target 111318705","description":"For bids","sellerId":14,"startingPrice":50.00,"currentPrice":50.00,"highestBidId":null,"highestBidderId":null,"startTime":"2026-08-07T12:13:20","endTime":"2026-08-07T13:13:20","status":"ACTIVE","createdAt":"2026-08-07T11:13:21.950799"}
+2026-08-07 11:13:22.026  ========================================================================
+2026-08-07 11:13:22.027  REQUEST  POST /api/bids
+2026-08-07 11:13:22.029    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:22.031    Body: {
+    "amount":  60,
+    "bidderId":  14,
+    "auctionId":  13
+}
+2026-08-07 11:13:22.362  RESPONSE 400 Bad Request
+2026-08-07 11:13:22.364    Body: {"timestamp":"2026-08-07T11:13:22.3240953","status":400,"error":"Bad Request","message":"Auction not found or not accepting bids","path":"/api/bids","fieldErrors":null}
+2026-08-07 11:13:22.381  ========================================================================
+2026-08-07 11:13:22.382  REQUEST  POST /api/bids
+2026-08-07 11:13:22.384    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:22.386    Body: {
+    "amount":  55,
+    "bidderId":  14,
+    "auctionId":  13
+}
+2026-08-07 11:13:22.413  RESPONSE 400 Bad Request
+2026-08-07 11:13:22.415    Body: {"timestamp":"2026-08-07T11:13:22.407836","status":400,"error":"Bad Request","message":"Auction not found or not accepting bids","path":"/api/bids","fieldErrors":null}
+2026-08-07 11:13:22.419  ========================================================================
+2026-08-07 11:13:22.420  REQUEST  POST /api/bids
+2026-08-07 11:13:22.424    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:22.426    Body: {
+    "amount":  0,
+    "bidderId":  14,
+    "auctionId":  13
+}
+2026-08-07 11:13:22.495  RESPONSE 400 Bad Request
+2026-08-07 11:13:22.498    Body: {"timestamp":"2026-08-07T11:13:22.4848257","status":400,"error":"Bad Request","message":"Validation failed","path":"/api/bids","fieldErrors":{"amount":"Bid amount must be greater than 0"}}
+2026-08-07 11:13:22.501  ========================================================================
+2026-08-07 11:13:22.503  REQUEST  POST /api/bids
+2026-08-07 11:13:22.505    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:22.507    Body: {
+    "amount":  75,
+    "bidderId":  14,
+    "auctionId":  13
+}
+2026-08-07 11:13:22.533  RESPONSE 400 Bad Request
+2026-08-07 11:13:22.535    Body: {"timestamp":"2026-08-07T11:13:22.5280341","status":400,"error":"Bad Request","message":"Auction not found or not accepting bids","path":"/api/bids","fieldErrors":null}
+2026-08-07 11:13:22.540  ========================================================================
+2026-08-07 11:13:22.542  REQUEST  GET /api/bids/
+2026-08-07 11:13:22.543    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:22.567  RESPONSE 500 Internal Server Error
+2026-08-07 11:13:22.569    Body: {"timestamp":"2026-08-07T11:13:22.563626","status":500,"error":"Internal Server Error","message":"No static resource api/bids for request '/api/bids/'.","path":"/api/bids/","fieldErrors":null}
+2026-08-07 11:13:22.575  ========================================================================
+2026-08-07 11:13:22.577  REQUEST  GET /api/bids/auction/13
+2026-08-07 11:13:22.579    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:23.003  RESPONSE 200 OK
+2026-08-07 11:13:23.007    Body: []
+2026-08-07 11:13:23.016  ========================================================================
+2026-08-07 11:13:23.019  REQUEST  GET /api/bids/bidder/14
+2026-08-07 11:13:23.023    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:23.075  RESPONSE 200 OK
+2026-08-07 11:13:23.078    Body: []
+2026-08-07 11:13:23.085  ========================================================================
+2026-08-07 11:13:23.089  REQUEST  GET /api/bids/auction/13/highest
+2026-08-07 11:13:23.095    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:23.130  RESPONSE 404 Not Found
+2026-08-07 11:13:23.133    Body: {"timestamp":"2026-08-07T11:13:23.1221461","status":404,"error":"Not Found","message":"No bids found for auction: 13","path":"/api/bids/auction/13/highest","fieldErrors":null}
+2026-08-07 11:13:23.140  ========================================================================
+2026-08-07 11:13:23.142  REQUEST  GET /api/bids/auction/13/highest
+2026-08-07 11:13:23.145    Header: Authorization: Bearer <redacted>
+2026-08-07 11:13:23.175  RESPONSE 404 Not Found
+2026-08-07 11:13:23.177    Body: {"timestamp":"2026-08-07T11:13:23.1678052","status":404,"error":"Not Found","message":"No bids found for auction: 13","path":"/api/bids/auction/13/highest","fieldErrors":null}

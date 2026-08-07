@@ -16,7 +16,6 @@ public class CreateBidRequest {
     @NotNull(message = "Auction ID is required")
     private Long auctionId;
 
-    @NotNull(message = "Bidder ID is required")
     private Long bidderId;
 
     @NotNull(message = "Bid amount is required")

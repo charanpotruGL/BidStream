@@ -25,6 +25,7 @@ public class CreateAuctionRequest {
 
     @NotNull(message = "Starting price is required")
     @DecimalMin(value = "0.01", message = "Starting price must be greater than 0")
+    @Digits(integer = 13, fraction = 2, message = "Starting price must have at most 2 decimal places")
     private BigDecimal startingPrice;
 
     @NotNull(message = "Start time is required")

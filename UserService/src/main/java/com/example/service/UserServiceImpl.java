@@ -42,7 +42,13 @@ public class UserServiceImpl implements UserService {
                 .active(true)
                 .build();
 
-        User saved = userRepository.save(user);
+        User saved;
+        try {
+            saved = userRepository.save(user);
+        } catch (org.springframework.dao.DataIntegrityViolationException ex) {
+            throw new UserAlreadyExistsException(
+                    "Username or email already exists: " + request.getUsername());
+        }
         log.info("Registered new user: {}", saved.getUsername());
 
         String token = jwtTokenProvider.generateToken(saved.getId(), saved.getUsername(), saved.getRole());

@@ -10,6 +10,8 @@ public interface BidService {
 
     BidResponse placeBid(CreateBidRequest request);
 
+    void markAuctionOutcome(Long auctionId, Long winningBidId);
+
     BidResponse getBidById(Long bidId);
 
     List<BidResponse> getBidsByAuction(Long auctionId);

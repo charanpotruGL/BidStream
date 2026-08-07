@@ -126,6 +126,8 @@ export interface AuctionQueryParams {
 export enum BidStatus {
   PLACED = "PLACED",
   OUTBID = "OUTBID",
+  WINNING = "WINNING",
+  LOST = "LOST",
 }
 
 export interface Bid {

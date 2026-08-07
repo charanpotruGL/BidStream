@@ -81,7 +81,7 @@ export const SellerHubPage: React.FC = () => {
       />
 
       {isLoading ? (
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2" role="status" aria-label="Loading your auctions">
           {[1, 2, 3, 4].map((i) => (
             <Skeleton key={i} className="h-48" />
           ))}
@@ -129,7 +129,7 @@ export const SellerHubPage: React.FC = () => {
 
                 <div className="grid grid-cols-3 gap-4 rounded-xl border border-slate-700/70 bg-slate-900/40 px-4 py-3">
                   <div>
-                    <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                    <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                       Current
                     </p>
                     <p className="mt-0.5 truncate text-sm font-bold text-white">
@@ -137,7 +137,7 @@ export const SellerHubPage: React.FC = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                    <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                       Bids
                     </p>
                     <p className="mt-0.5 text-sm font-bold text-white">
@@ -145,7 +145,7 @@ export const SellerHubPage: React.FC = () => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                    <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                       Ends
                     </p>
                     <p className="mt-0.5 truncate text-xs font-semibold text-slate-300">

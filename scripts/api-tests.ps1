@@ -235,23 +235,34 @@ $bidAuction = Get-JsonFromResponse $bidAuctionResp
 $bidAuctionId = $bidAuction.id
 Invoke-Assert -Name "POST /api/auctions/{id}/start (bid target) -> 200" -Expected 200 -Req @{ Method = "POST"; Path = "/api/auctions/$bidAuctionId/start"; Token = $token } | Out-Null
 
-$bidBody1 = @{ auctionId = $bidAuctionId; bidderId = $newUserId; amount = 60.00 }
-$bid1Resp = Invoke-Assert -Name "POST /api/bids -> 201" -Expected 201 -Req @{ Method = "POST"; Path = "/api/bids"; Body = $bidBody1; Token = $token }
+# Register a separate bidder (seller cannot bid on own auction)
+$bidderUsername = "bidder_$userSuffix"
+$bidderEmail = "$bidderUsername@example.com"
+$bidderReg = Invoke-Assert -Name "register bidder user -> 201" -Expected 201 -Req @{ Method = "POST"; Path = "/api/auth/register"; Body = @{ username = $bidderUsername; email = $bidderEmail; password = "secret123"; fullName = "Bidder"; role = "USER" } }
+$bidder = Get-JsonFromResponse $bidderReg
+$bidderToken = $bidder.token
+$bidderId = $bidder.userId
+
+# Seller attempting to bid on own auction -> 400
+Assert-Status "POST /api/bids on own auction -> 400" 400 { Invoke-Gateway -Method "POST" -Path "/api/bids" -Body @{ auctionId = $bidAuctionId; bidderId = $newUserId; amount = 60.00 } -Token $token }
+
+$bidBody1 = @{ auctionId = $bidAuctionId; bidderId = $bidderId; amount = 60.00 }
+$bid1Resp = Invoke-Assert -Name "POST /api/bids -> 201" -Expected 201 -Req @{ Method = "POST"; Path = "/api/bids"; Body = $bidBody1; Token = $bidderToken }
 $bid1 = Get-JsonFromResponse $bid1Resp
 Test-Pass "bid placed id=$($bid1.id) amount=$($bid1.amount) status=$($bid1.status)"
 
-Assert-Status "POST /api/bids lower amount -> 400" 400 { Invoke-Gateway -Method "POST" -Path "/api/bids" -Body @{ auctionId = $bidAuctionId; bidderId = $newUserId; amount = 55.00 } -Token $token }
-Assert-Status "POST /api/bids zero amount -> 400" 400 { Invoke-Gateway -Method "POST" -Path "/api/bids" -Body @{ auctionId = $bidAuctionId; bidderId = $newUserId; amount = 0 } -Token $token }
+Assert-Status "POST /api/bids lower amount -> 400" 400 { Invoke-Gateway -Method "POST" -Path "/api/bids" -Body @{ auctionId = $bidAuctionId; bidderId = $bidderId; amount = 55.00 } -Token $bidderToken }
+Assert-Status "POST /api/bids zero amount -> 400" 400 { Invoke-Gateway -Method "POST" -Path "/api/bids" -Body @{ auctionId = $bidAuctionId; bidderId = $bidderId; amount = 0 } -Token $bidderToken }
 
-$bid2Resp = Invoke-Assert -Name "POST /api/bids higher -> 201" -Expected 201 -Req @{ Method = "POST"; Path = "/api/bids"; Body = @{ auctionId = $bidAuctionId; bidderId = $newUserId; amount = 75.00 }; Token = $token }
+$bid2Resp = Invoke-Assert -Name "POST /api/bids higher -> 201" -Expected 201 -Req @{ Method = "POST"; Path = "/api/bids"; Body = @{ auctionId = $bidAuctionId; bidderId = $bidderId; amount = 75.00 }; Token = $bidderToken }
 $bid2 = Get-JsonFromResponse $bid2Resp
 Test-Pass "second (higher) bid placed id=$($bid2.id)"
 
-Assert-Status "GET /api/bids/{bidId} -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/$($bid1.id)" -Token $token }
-Assert-Status "GET /api/bids/auction/{id} -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/auction/$bidAuctionId" -Token $token }
-Assert-Status "GET /api/bids/bidder/{id} -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/bidder/$newUserId" -Token $token }
-Assert-Status "GET /api/bids/auction/{id}/highest -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/auction/$bidAuctionId/highest" -Token $token }
-$highest = Get-JsonFromResponse (Invoke-Gateway -Method "GET" -Path "/api/bids/auction/$bidAuctionId/highest" -Token $token)
+Assert-Status "GET /api/bids/{bidId} -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/$($bid1.id)" -Token $bidderToken }
+Assert-Status "GET /api/bids/auction/{id} -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/auction/$bidAuctionId" -Token $bidderToken }
+Assert-Status "GET /api/bids/bidder/{id} -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/bidder/$bidderId" -Token $bidderToken }
+Assert-Status "GET /api/bids/auction/{id}/highest -> 200" 200 { Invoke-Gateway -Method "GET" -Path "/api/bids/auction/$bidAuctionId/highest" -Token $bidderToken }
+$highest = Get-JsonFromResponse (Invoke-Gateway -Method "GET" -Path "/api/bids/auction/$bidAuctionId/highest" -Token $bidderToken)
 Test-Pass "highest bid = $($highest.amount) (expected 75)"
 if ([double]$highest.amount -eq 75) { Test-Pass "highest bid value correct" } else { Test-Fail "highest bid value" "got $($highest.amount)" }
 
@@ -310,9 +321,10 @@ Write-Host "--- KAFKA EVENT FLOW (waiting for async processing) ---" -Foreground
 Start-Sleep -Seconds 15
 $eventNotifs = Get-JsonFromResponse (Invoke-Gateway -Method "GET" -Path "/api/notifications/user/me" -Token $token)
 $auctionCreatedNotifs = @($eventNotifs | Where-Object { $_.notificationType -eq "AUCTION_CREATED" })
-$bidPlacedNotifs = @($eventNotifs | Where-Object { $_.notificationType -eq "BID_PLACED" })
 if ($auctionCreatedNotifs.Count -gt 0) { Test-Pass "Kafka: auction-created -> notification delivered ($($auctionCreatedNotifs.Count))" } else { Test-Fail "Kafka: auction-created notification" "no AUCTION_CREATED notifications for user $newUserId" }
-if ($bidPlacedNotifs.Count -gt 0) { Test-Pass "Kafka: bid-placed -> notification delivered ($($bidPlacedNotifs.Count))" } else { Test-Fail "Kafka: bid-placed notification" "no BID_PLACED notifications for user $newUserId" }
+$bidderNotifs = Get-JsonFromResponse (Invoke-Gateway -Method "GET" -Path "/api/notifications/user/me" -Token $bidderToken)
+$bidPlacedNotifs = @($bidderNotifs | Where-Object { $_.notificationType -eq "BID_PLACED" })
+if ($bidPlacedNotifs.Count -gt 0) { Test-Pass "Kafka: bid-placed -> notification delivered to bidder ($($bidPlacedNotifs.Count))" } else { Test-Fail "Kafka: bid-placed notification" "no BID_PLACED notifications for bidder $bidderId" }
 
 # Cleanup: delete created auction
 Assert-Status "DELETE /api/auctions/{id} -> 204" 204 { Invoke-Gateway -Method "DELETE" -Path "/api/auctions/$auctionId" -Token $token }

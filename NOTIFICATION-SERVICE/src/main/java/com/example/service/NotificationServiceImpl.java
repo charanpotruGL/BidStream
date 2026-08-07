@@ -42,14 +42,14 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<NotificationResponse> getNotificationsForUser(Long userId) {
-        return notificationRepository.findByUserId(userId).stream()
+        return notificationRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
                 .map(NotificationResponse::fromEntity)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<NotificationResponse> getUnreadNotificationsForUser(Long userId) {
-        return notificationRepository.findByUserIdAndReadFalse(userId).stream()
+        return notificationRepository.findByUserIdAndReadFalseOrderByCreatedAtDesc(userId).stream()
                 .map(NotificationResponse::fromEntity)
                 .collect(Collectors.toList());
     }
@@ -69,7 +69,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void markAllAsRead(Long userId) {
-        List<Notification> notifications = notificationRepository.findByUserIdAndReadFalse(userId);
+        List<Notification> notifications = notificationRepository.findByUserIdAndReadFalseOrderByCreatedAtDesc(userId);
         notifications.forEach(n -> n.setRead(true));
         notificationRepository.saveAll(notifications);
         log.info("Marked {} notifications as read for user {}", notifications.size(), userId);

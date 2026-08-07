@@ -2,6 +2,7 @@ package com.example.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -34,9 +35,11 @@ public class Auction {
     private Long sellerId;
 
     @Column(name = "starting_price", nullable = false, precision = 15, scale = 2)
+    @Digits(integer = 13, fraction = 2, message = "Starting price must have at most 2 decimal places")
     private BigDecimal startingPrice;
 
     @Column(name = "current_price", precision = 15, scale = 2)
+    @Digits(integer = 13, fraction = 2, message = "Current price must have at most 2 decimal places")
     private BigDecimal currentPrice;
 
     @Column(name = "highest_bid_id")

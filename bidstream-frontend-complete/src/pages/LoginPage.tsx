@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { Mail, Lock, User, Shield, Eye, EyeOff, Gavel, Bell, Zap } from 'lucide-react'
 import { apiClient } from '../api/client'
 import { useAuthStore } from '../store'
-import { AuthCredentials, RegisterPayload, UserRole } from '../types'
+import { AuthCredentials, AuthResponse, RegisterPayload, UserRole } from '../types'
 import { toast } from 'sonner'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
@@ -39,7 +39,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate()
   const { setUser, setToken } = useAuthStore()
 
-  const handleAuthSuccess = (data: { token: string; userId: number }) => {
+  const handleAuthSuccess = async (data: { token: string; userId: number }) => {
     apiClient.setToken(data.token)
     apiClient.setUserId(data.userId)
     setToken(data.token)
@@ -47,19 +47,29 @@ export const LoginPage: React.FC = () => {
     navigate('/auctions')
   }
 
-  const loginMutation = useMutation({
-    mutationFn: (creds: AuthCredentials) => apiClient.login(creds),
-    onSuccess: (data) => {
+  const completeAuth = async (data: AuthResponse) => {
+    handleAuthSuccess(data)
+    try {
+      const user = await apiClient.getUserById(data.userId)
+      setUser(user)
+    } catch {
+      // Fall back to the auth payload if the profile fetch fails.
       setUser({
         id: data.userId,
         username: data.username,
         email: data.email,
         fullName: '',
-        role: data.role as UserRole,
+        role: data.role,
         active: true,
         createdAt: new Date().toISOString(),
       })
-      handleAuthSuccess(data)
+    }
+  }
+
+  const loginMutation = useMutation({
+    mutationFn: (creds: AuthCredentials) => apiClient.login(creds),
+    onSuccess: (data) => {
+      void completeAuth(data)
     },
     onError: (error: any) => toast.error(apiClient.getErrorMessage(error)),
   })
@@ -67,16 +77,7 @@ export const LoginPage: React.FC = () => {
   const registerMutation = useMutation({
     mutationFn: (payload: RegisterPayload) => apiClient.register(payload),
     onSuccess: (data) => {
-      setUser({
-        id: data.userId,
-        username: data.username,
-        email: data.email,
-        fullName: '',
-        role: data.role as UserRole,
-        active: true,
-        createdAt: new Date().toISOString(),
-      })
-      handleAuthSuccess(data)
+      void completeAuth(data)
     },
     onError: (error: any) => toast.error(apiClient.getErrorMessage(error)),
   })
@@ -149,7 +150,7 @@ export const LoginPage: React.FC = () => {
           </ul>
         </div>
 
-        <p className="relative text-xs text-slate-600">
+        <p className="relative text-xs text-slate-400">
           © {new Date().getFullYear()} BidStream. All rights reserved.
         </p>
       </div>

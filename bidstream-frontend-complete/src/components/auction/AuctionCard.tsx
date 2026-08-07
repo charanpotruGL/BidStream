@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { motion } from 'framer-motion'
 import { Clock, Gavel, Eye } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Auction, AuctionStatus } from '../../types'
-import { formatCurrency, getTimeRemaining } from '../../utils'
+import { formatCurrency } from '../../utils'
+import { useCountdown } from '../../hooks/useCountdown'
 import { Badge } from '../ui/Badge'
 import { Button } from '../ui/Button'
+import { UserName } from '../ui/UserName'
 import { auctionStatusTone, auctionStatusLabel } from '../ui/auctionStatus'
-import { cn } from '../../lib/cn'
 
 // ============================================================================
 // Auction Card Component
@@ -24,30 +25,16 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({
   onQuickBid,
   isLoading = false,
 }) => {
-  const [timeRemaining, setTimeRemaining] = useState<string>('')
-  const [percentageIncrease, setPercentageIncrease] = useState<number>(0)
-
-  useEffect(() => {
-    const updateCountdown = () => {
-      const remaining = getTimeRemaining(new Date(auction.endTime))
-      setTimeRemaining(remaining)
-    }
-
-    updateCountdown()
-    const interval = setInterval(updateCountdown, 1000)
-    return () => clearInterval(interval)
-  }, [auction.endTime])
-
-  useEffect(() => {
-    if (auction.startingPrice > 0) {
-      const increase =
-        ((auction.currentPrice - auction.startingPrice) / auction.startingPrice) *
-        100
-      setPercentageIncrease(increase)
-    }
-  }, [auction.currentPrice, auction.startingPrice])
-
   const isActive = auction.status === AuctionStatus.ACTIVE
+
+  // Countdown only ticks while the auction is live.
+  const timeRemaining = useCountdown(auction.endTime, { disabled: !isActive })
+
+  const percentageIncrease =
+    auction.startingPrice > 0
+      ? ((auction.currentPrice - auction.startingPrice) / auction.startingPrice) *
+        100
+      : 0
 
   return (
     <motion.div
@@ -103,7 +90,7 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({
         <div className="mt-auto space-y-3 border-t border-slate-700/70 pt-4">
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 Current Price
               </p>
               <p className="text-2xl font-bold tracking-tight text-white">
@@ -119,7 +106,7 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 Starting
               </p>
               <p className="text-sm font-semibold text-slate-300">
@@ -127,7 +114,7 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+              <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                 Bids
               </p>
               <p className="text-sm font-semibold text-slate-300">
@@ -180,8 +167,8 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({
           <div className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-center">
             <p className="text-sm text-slate-300">Auction ended</p>
             {auction.highestBidderId && (
-              <p className="mt-0.5 text-xs text-slate-500">
-                Won by bidder #{auction.highestBidderId}
+              <p className="mt-0.5 text-xs text-slate-400">
+                Won by <UserName userId={auction.highestBidderId} />
               </p>
             )}
           </div>
@@ -189,7 +176,7 @@ export const AuctionCard: React.FC<AuctionCardProps> = ({
 
         {/* Pending state */}
         {auction.status === AuctionStatus.PENDING && (
-          <div className={cn('rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-center')}>
+          <div className="rounded-xl border border-slate-700 bg-slate-900/50 px-4 py-3 text-center">
             <p className="text-sm text-slate-300">
               Starts {new Date(auction.startTime).toLocaleDateString()}
             </p>

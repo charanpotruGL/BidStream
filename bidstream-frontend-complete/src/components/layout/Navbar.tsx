@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Bell, LogOut, Menu, X, Search, ChevronDown } from 'lucide-react'
-import { useAuthStore, useNotificationStore } from '../../store'
+import { useAuthStore } from '../../store'
 import { apiClient } from '../../api/client'
+import { useNotifications } from '../../hooks/useNotifications'
 import { Notification } from '../../types'
 import { getInitials } from '../../utils'
 import { NotificationIcon } from '../ui/NotificationIcon'
@@ -25,42 +26,14 @@ export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isNotificationOpen, setIsNotificationOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const notificationRef = useRef<HTMLDivElement>(null)
   const userMenuRef = useRef<HTMLDivElement>(null)
   const { user, isAuthenticated, logout } = useAuthStore()
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const { unreadCount, notifications, markAsRead, markAllAsRead } =
-    useNotificationStore()
-
-  // Fetch unread notification count
-  const { data: count } = useQuery({
-    queryKey: ['notifications', 'count'],
-    queryFn: () => apiClient.getUnreadNotificationCount(),
-    enabled: isAuthenticated,
-    refetchInterval: 30000, // Poll every 30 seconds
-  })
-
-  // Fetch the full notification list into the store
-  const { data: notificationList } = useQuery({
-    queryKey: ['notifications', 'list'],
-    queryFn: () => apiClient.getMyNotifications(),
-    enabled: isAuthenticated,
-    refetchInterval: 30000,
-  })
-
-  useEffect(() => {
-    if (count !== undefined) {
-      useNotificationStore.setState({ unreadCount: count })
-    }
-  }, [count])
-
-  useEffect(() => {
-    if (notificationList) {
-      useNotificationStore.setState({
-        notifications: notificationList,
-        unreadCount: notificationList.filter((n) => !n.read).length,
-      })
-    }
-  }, [notificationList])
+    useNotifications({ enabled: isAuthenticated })
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -82,13 +55,21 @@ export const Navbar: React.FC = () => {
   const handleLogout = () => {
     logout()
     apiClient.clearToken()
-    window.location.href = '/login'
+    apiClient.clearUserId()
+    queryClient.clear()
+    navigate('/login')
+  }
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const query = searchQuery.trim()
+    navigate(query ? `/auctions?q=${encodeURIComponent(query)}` : '/auctions')
+    setSearchQuery('')
   }
 
   const handleNotificationClick = (notification: Notification) => {
     if (!notification.read) {
       markAsRead(notification.id)
-      apiClient.markNotificationAsRead(notification.id).catch(console.error)
     }
   }
 
@@ -108,18 +89,20 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden flex-1 items-center justify-center gap-8 md:flex">
-            <div className="relative w-full max-w-xs">
+            <form onSubmit={handleSearchSubmit} className="relative w-full max-w-xs">
               <Search
                 className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"
                 aria-hidden="true"
               />
               <input
-                type="text"
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search auctions..."
                 aria-label="Search auctions"
                 className="h-10 w-full rounded-full border border-slate-700 bg-slate-900/70 pl-10 pr-4 text-sm text-slate-100 placeholder:text-slate-500 transition-colors focus:border-brand-500/60 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
               />
-            </div>
+            </form>
 
             <NavLink to="/auctions" className={navLinkClass}>
               Auctions
@@ -168,10 +151,7 @@ export const Navbar: React.FC = () => {
                         </h3>
                         {unreadCount > 0 && (
                           <button
-                            onClick={() => {
-                              markAllAsRead()
-                              apiClient.markAllNotificationsAsRead()
-                            }}
+                            onClick={markAllAsRead}
                             className="text-xs font-medium text-brand-400 transition-colors hover:text-brand-300"
                           >
                             Mark all as read
@@ -213,7 +193,7 @@ export const Navbar: React.FC = () => {
                                 <p className="mt-0.5 line-clamp-2 text-xs text-slate-400">
                                   {notif.message}
                                 </p>
-                                <p className="mt-1 text-[11px] text-slate-500">
+                                <p className="mt-1 text-[11px] text-slate-400">
                                   {new Date(notif.createdAt).toLocaleString()}
                                 </p>
                               </div>
@@ -278,7 +258,7 @@ export const Navbar: React.FC = () => {
                           <p className="truncate text-sm font-semibold text-white">
                             {user?.fullName || user?.username}
                           </p>
-                          <p className="truncate text-xs text-slate-500">{user?.email}</p>
+                          <p className="truncate text-xs text-slate-400">{user?.email}</p>
                         </div>
                         <Link
                           to="/seller-hub"
@@ -286,6 +266,13 @@ export const Navbar: React.FC = () => {
                           className="block px-4 py-2 text-sm text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
                         >
                           Seller Hub
+                        </Link>
+                        <Link
+                          to="/profile"
+                          onClick={() => setIsOpen(false)}
+                          className="block px-4 py-2 text-sm text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+                        >
+                          My Profile
                         </Link>
                         <button
                           onClick={handleLogout}

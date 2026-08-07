@@ -25,10 +25,10 @@ export const formatDateTime = (dateString: string): string => {
 };
 
 /**
- * Calculate time remaining until a future date
+ * Calculate time remaining until a future date.
+ * `now` is injectable so callers can drive updates from a shared ticker.
  */
-export const getTimeRemaining = (endDate: Date): string => {
-  const now = new Date();
+export const getTimeRemaining = (endDate: Date, now: Date = new Date()): string => {
   const difference = endDate.getTime() - now.getTime();
 
   if (difference <= 0) {

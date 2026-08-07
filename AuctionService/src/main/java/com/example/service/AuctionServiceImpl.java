@@ -16,11 +16,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,9 +40,11 @@ public class AuctionServiceImpl implements AuctionService {
     private static final String TOPIC_CREATED = "auction-created";
     private static final String TOPIC_STARTED = "auction-started";
     private static final String TOPIC_CLOSED = "auction-closed";
+    private static final int MAX_AUCTION_AGE_DAYS = 5;
 
     @Override
-    public AuctionResponse createAuction(CreateAuctionRequest request) {
+    @Transactional
+    public AuctionResponse createAuction(CreateAuctionRequest request, Long sellerId) {
         if (!request.getEndTime().isAfter(request.getStartTime())) {
             throw new InvalidAuctionStateException("End time must be after start time");
         }
@@ -47,7 +52,7 @@ public class AuctionServiceImpl implements AuctionService {
         Auction auction = Auction.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .sellerId(request.getSellerId())
+                .sellerId(sellerId)
                 .startingPrice(request.getStartingPrice())
                 .currentPrice(request.getStartingPrice())
                 .startTime(request.getStartTime())
@@ -56,7 +61,7 @@ public class AuctionServiceImpl implements AuctionService {
                 .build();
 
         Auction saved = auctionRepository.save(auction);
-        log.info("Auction created: id={}, title={}", saved.getId(), saved.getTitle());
+        log.info("Auction created: id={}, title={}, sellerId={}", saved.getId(), saved.getTitle(), saved.getSellerId());
 
         publishCreatedEvent(saved);
         return AuctionResponse.fromEntity(saved);
@@ -90,8 +95,10 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public AuctionResponse updateAuction(Long id, UpdateAuctionRequest request) {
+    @Transactional
+    public AuctionResponse updateAuction(Long id, UpdateAuctionRequest request, Long sellerId) {
         Auction auction = getAuctionEntity(id);
+        assertSellerOwns(auction, sellerId);
         if (auction.getStatus() != Auction.AuctionStatus.PENDING) {
             throw new InvalidAuctionStateException("Only PENDING auctions can be updated");
         }
@@ -102,6 +109,9 @@ public class AuctionServiceImpl implements AuctionService {
             auction.setDescription(request.getDescription());
         }
         if (request.getStartingPrice() != null) {
+            if (auction.getHighestBidId() == null) {
+                auction.setCurrentPrice(request.getStartingPrice());
+            }
             auction.setStartingPrice(request.getStartingPrice());
         }
         if (request.getStartTime() != null) {
@@ -110,13 +120,16 @@ public class AuctionServiceImpl implements AuctionService {
         if (request.getEndTime() != null) {
             auction.setEndTime(request.getEndTime());
         }
+        validateTimes(auction.getStartTime(), auction.getEndTime());
         Auction updated = auctionRepository.save(auction);
         return AuctionResponse.fromEntity(updated);
     }
 
     @Override
-    public AuctionResponse startAuction(Long id) {
+    @Transactional
+    public AuctionResponse startAuction(Long id, Long sellerId) {
         Auction auction = getAuctionEntity(id);
+        assertSellerOwns(auction, sellerId);
         if (auction.getStatus() != Auction.AuctionStatus.PENDING) {
             throw new InvalidAuctionStateException("Only PENDING auctions can be started");
         }
@@ -129,8 +142,10 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public AuctionResponse closeAuction(Long id) {
+    @Transactional
+    public AuctionResponse closeAuction(Long id, Long sellerId) {
         Auction auction = getAuctionEntity(id);
+        assertSellerOwns(auction, sellerId);
         if (auction.getStatus() != Auction.AuctionStatus.ACTIVE) {
             throw new InvalidAuctionStateException("Only ACTIVE auctions can be closed");
         }
@@ -143,17 +158,54 @@ public class AuctionServiceImpl implements AuctionService {
     }
 
     @Override
-    public void deleteAuction(Long id) {
-        if (!auctionRepository.existsById(id)) {
-            throw new AuctionNotFoundException(id);
-        }
-        auctionRepository.deleteById(id);
+    @Transactional
+    public void deleteAuction(Long id, Long sellerId) {
+        Auction auction = getAuctionEntity(id);
+        assertSellerOwns(auction, sellerId);
+        auctionRepository.delete(auction);
     }
 
     @Override
     public Auction getAuctionEntity(Long id) {
         return auctionRepository.findById(id)
                 .orElseThrow(() -> new AuctionNotFoundException(id));
+    }
+
+    @Override
+    @Transactional
+    public void recordBid(Long auctionId, Long bidId, Long bidderId, BigDecimal amount) {
+        Auction auction = auctionRepository.findById(auctionId).orElse(null);
+        if (auction == null || auction.getStatus() != Auction.AuctionStatus.ACTIVE) {
+            return;
+        }
+        if (auction.getCurrentPrice() != null && amount.compareTo(auction.getCurrentPrice()) <= 0) {
+            return;
+        }
+        auction.setCurrentPrice(amount);
+        auction.setHighestBidId(bidId);
+        auction.setHighestBidderId(bidderId);
+        auctionRepository.save(auction);
+        log.info("Auction {} highest bid updated: bidId={}, bidderId={}, amount={}",
+                auctionId, bidId, bidderId, amount);
+    }
+
+    private void assertSellerOwns(Auction auction, Long sellerId) {
+        if (sellerId == null || !auction.getSellerId().equals(sellerId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "You do not have permission to perform this action");
+        }
+    }
+
+    private void validateTimes(LocalDateTime startTime, LocalDateTime endTime) {
+        if (!endTime.isAfter(startTime)) {
+            throw new InvalidAuctionStateException("End time must be after start time");
+        }
+        if (startTime.isBefore(LocalDateTime.now())) {
+            throw new InvalidAuctionStateException("Start time must be in the future");
+        }
+        if (endTime.isBefore(LocalDateTime.now())) {
+            throw new InvalidAuctionStateException("End time must be in the future");
+        }
     }
 
     private void publishCreatedEvent(Auction auction) {
@@ -165,7 +217,7 @@ public class AuctionServiceImpl implements AuctionService {
                 .startTime(auction.getStartTime())
                 .endTime(auction.getEndTime())
                 .build();
-        publish(TOPIC_CREATED, event);
+        publish(TOPIC_CREATED, auction.getId(), event);
     }
 
     private void publishStartedEvent(Auction auction) {
@@ -175,7 +227,7 @@ public class AuctionServiceImpl implements AuctionService {
                 .sellerId(auction.getSellerId())
                 .startedAt(LocalDateTime.now())
                 .build();
-        publish(TOPIC_STARTED, event);
+        publish(TOPIC_STARTED, auction.getId(), event);
     }
 
     private void publishClosedEvent(Auction auction) {
@@ -188,13 +240,13 @@ public class AuctionServiceImpl implements AuctionService {
                 .finalPrice(auction.getCurrentPrice())
                 .closedAt(LocalDateTime.now())
                 .build();
-        publish(TOPIC_CLOSED, event);
+        publish(TOPIC_CLOSED, auction.getId(), event);
     }
 
-    private void publish(String topic, Object event) {
+    private void publish(String topic, Long key, Object event) {
         try {
             String payload = objectMapper.writeValueAsString(event);
-            kafkaTemplate.send(topic, payload);
+            kafkaTemplate.send(topic, String.valueOf(key), payload);
             log.info("Published event to topic {}: {}", topic, payload);
         } catch (JsonProcessingException e) {
             log.error("Failed to serialize event for topic {}", topic, e);
@@ -208,25 +260,51 @@ public class AuctionServiceImpl implements AuctionService {
 
         List<Auction> pending = auctionRepository.findByStatusAndStartTimeBefore(Auction.AuctionStatus.PENDING, now);
         for (Auction auction : pending) {
-            auction.setStatus(Auction.AuctionStatus.ACTIVE);
-            auctionRepository.save(auction);
-            publishStartedEvent(auction);
-            log.info("Auction auto-started: id={}", auction.getId());
+            Auction current = auctionRepository.findById(auction.getId()).orElse(null);
+            if (current == null || current.getStatus() != Auction.AuctionStatus.PENDING) {
+                continue;
+            }
+            current.setStatus(Auction.AuctionStatus.ACTIVE);
+            auctionRepository.save(current);
+            publishStartedEvent(current);
+            log.info("Auction auto-started: id={}", current.getId());
         }
 
         List<Auction> active = auctionRepository.findByStatusAndEndTimeBefore(Auction.AuctionStatus.ACTIVE, now);
         for (Auction auction : active) {
-            auction.setStatus(Auction.AuctionStatus.CLOSED);
-            auctionRepository.save(auction);
-            publishClosedEvent(auction);
-            log.info("Auction auto-closed: id={}", auction.getId());
+            Auction current = auctionRepository.findById(auction.getId()).orElse(null);
+            if (current == null || current.getStatus() != Auction.AuctionStatus.ACTIVE) {
+                continue;
+            }
+            current.setStatus(Auction.AuctionStatus.CLOSED);
+            auctionRepository.save(current);
+            publishClosedEvent(current);
+            log.info("Auction auto-closed: id={}", current.getId());
         }
 
-        List<Auction> expired = auctionRepository.findByStatusAndEndTimeBefore(Auction.AuctionStatus.PENDING, now);
+        List<Auction> expired = auctionRepository
+                .findByStatusAndEndTimeBeforeAndStartTimeAfter(Auction.AuctionStatus.PENDING, now, now);
         for (Auction auction : expired) {
-            auction.setStatus(Auction.AuctionStatus.EXPIRED);
-            auctionRepository.save(auction);
-            log.info("Auction expired: id={}", auction.getId());
+            Auction current = auctionRepository.findById(auction.getId()).orElse(null);
+            if (current == null || current.getStatus() != Auction.AuctionStatus.PENDING) {
+                continue;
+            }
+            current.setStatus(Auction.AuctionStatus.EXPIRED);
+            auctionRepository.save(current);
+            log.info("Auction expired: id={}", current.getId());
         }
+    }
+
+    @Scheduled(cron = "${auction.cleanup.cron:0 0 3 * * *}")
+    @Transactional
+    public void deleteOldAuctions() {
+        LocalDateTime cutoff = LocalDateTime.now().minusDays(MAX_AUCTION_AGE_DAYS);
+        List<Auction> oldAuctions = auctionRepository.findByStatusInAndEndTimeBefore(
+                List.of(Auction.AuctionStatus.CLOSED, Auction.AuctionStatus.EXPIRED), cutoff);
+        if (oldAuctions.isEmpty()) {
+            return;
+        }
+        oldAuctions.forEach(auction -> auctionRepository.delete(auction));
+        log.info("Deleted {} auctions older than {} days", oldAuctions.size(), MAX_AUCTION_AGE_DAYS);
     }
 }

@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { Grid, List, Plus, AlertTriangle, PackageOpen, ChevronLeft, ChevronRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Grid, List, Plus, AlertTriangle, PackageOpen, ChevronLeft, ChevronRight, SearchX } from 'lucide-react'
+import { Link, useSearchParams } from 'react-router-dom'
 import { AuctionCard } from '../components/auction/AuctionCard'
 import { CreateAuctionModal } from '../components/auction/CreateAuctionModal'
 import { apiClient } from '../api/client'
@@ -24,14 +24,19 @@ import { cn } from '../lib/cn'
 // Auctions Page - Main Marketplace View
 // ============================================================================
 
+type SortMode = 'price' | 'time-remaining' | 'newest'
+
 export const AuctionsPage: React.FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [statusFilter, setStatusFilter] = useState<AuctionStatus | 'ALL'>('ALL')
-  const [sortBy, setSortBy] = useState<'price' | 'time-remaining' | 'newest'>('price')
+  const [sortBy, setSortBy] = useState<SortMode>('price')
   const [currentPage, setCurrentPage] = useState(0)
   const [pageSize, setPageSize] = useState(12)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [searchParams, setSearchParams] = useSearchParams()
   const { user } = useAuthStore()
+
+  const searchTerm = (searchParams.get('q') ?? '').trim().toLowerCase()
 
   const queryParams: AuctionQueryParams = useMemo(() => {
     const params: AuctionQueryParams = {
@@ -59,20 +64,46 @@ export const AuctionsPage: React.FC = () => {
       if (statusFilter === 'ALL') {
         return await apiClient.getAuctions(queryParams)
       }
-      return await apiClient.getAuctionsByStatus(statusFilter)
+      return await apiClient.getAuctionsByStatus(statusFilter, {
+        page: currentPage,
+        size: pageSize,
+      })
     },
     staleTime: 30000,
     gcTime: 5 * 60 * 1000,
   })
 
+  // The status endpoint returns unsorted pages, so sort all views client-side
+  // for consistent ordering regardless of filter.
   const auctions = useMemo(() => {
-    if (!auctionData?.content) return []
-    let filtered = auctionData.content
+    const list = auctionData?.content ?? []
+    const filtered = searchTerm
+      ? list.filter(
+          (a) =>
+            a.title.toLowerCase().includes(searchTerm) ||
+            a.description.toLowerCase().includes(searchTerm)
+        )
+      : list
+
+    const sorted = [...filtered]
     if (sortBy === 'price') {
-      filtered = [...filtered].sort((a, b) => b.currentPrice - a.currentPrice)
+      sorted.sort((a, b) => b.currentPrice - a.currentPrice)
+    } else if (sortBy === 'time-remaining') {
+      sorted.sort(
+        (a, b) => new Date(a.endTime).getTime() - new Date(b.endTime).getTime()
+      )
+    } else {
+      sorted.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
     }
-    return filtered
-  }, [auctionData, sortBy])
+    return sorted
+  }, [auctionData, sortBy, searchTerm])
+
+  const clearSearch = () => {
+    searchParams.delete('q')
+    setSearchParams(searchParams, { replace: true })
+  }
 
   const handleQuickBid = async (auctionId: number, amount: number) => {
     if (!user) {
@@ -94,6 +125,7 @@ export const AuctionsPage: React.FC = () => {
 
   const canCreate = user?.role === 'SELLER' || user?.role === 'ADMIN'
   const totalPages = auctionData?.totalPages ?? 0
+  const hasSearch = searchTerm.length > 0
 
   return (
     <div className="flex flex-col gap-8">
@@ -189,7 +221,11 @@ export const AuctionsPage: React.FC = () => {
 
       {/* Content */}
       {isLoading && (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div
+          className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          role="status"
+          aria-label="Loading auctions"
+        >
           {Array.from({ length: Math.min(pageSize, 8) }).map((_, i) => (
             <Skeleton key={i} className="h-[380px]" />
           ))}
@@ -204,11 +240,24 @@ export const AuctionsPage: React.FC = () => {
         />
       )}
 
-      {!isLoading && !error && auctions.length === 0 && (
+      {!isLoading && !error && auctions.length === 0 && !hasSearch && (
         <EmptyState
           icon={<PackageOpen className="h-8 w-8" aria-hidden="true" />}
           title="No auctions found"
           description="Try adjusting your filters or check back later."
+        />
+      )}
+
+      {!isLoading && !error && auctions.length === 0 && hasSearch && (
+        <EmptyState
+          icon={<SearchX className="h-8 w-8" aria-hidden="true" />}
+          title="No matching auctions"
+          description={`Nothing found for "${searchTerm}". Try a different search.`}
+          action={
+            <Button variant="outline" onClick={clearSearch}>
+              Clear search
+            </Button>
+          }
         />
       )}
 

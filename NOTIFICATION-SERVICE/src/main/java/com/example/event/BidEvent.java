@@ -16,6 +16,7 @@ public class BidEvent {
 
     private Long bidId;
     private Long auctionId;
+    private String auctionTitle;
     private Long bidderId;
     private BigDecimal amount;
     private String eventType;

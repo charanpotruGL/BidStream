@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
+import * as Dialog from '@radix-ui/react-dialog'
 import { X, Calendar, DollarSign, Info } from 'lucide-react'
 import { CreateAuctionPayload } from '../../types'
 import { apiClient } from '../../api/client'
@@ -44,6 +45,7 @@ export const CreateAuctionModal: React.FC<CreateAuctionModalProps> = ({
         `Auction "${auction.title}" created successfully! Status: ${auction.status}`
       )
       queryClient.invalidateQueries({ queryKey: ['auctions'] })
+      queryClient.invalidateQueries({ queryKey: ['my-auctions'] })
       setFormData({
         title: '',
         description: '',
@@ -131,48 +133,50 @@ export const CreateAuctionModal: React.FC<CreateAuctionModalProps> = ({
     : ''
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') onClose()
-          }}
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-slate-950/80 p-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="create-auction-title"
-        >
+    <Dialog.Root
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) onClose()
+      }}
+    >
+      <Dialog.Portal>
+        <Dialog.Overlay asChild>
           <motion.div
-            initial={{ scale: 0.96, y: 16, opacity: 0 }}
-            animate={{ scale: 1, y: 0, opacity: 1 }}
-            exit={{ scale: 0.96, y: 16, opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm"
+          />
+        </Dialog.Overlay>
+
+        <Dialog.Content asChild>
+          <motion.div
+            initial={{ scale: 0.96, x: '-50%', y: 'calc(-50% + 16px)', opacity: 0 }}
+            animate={{ scale: 1, x: '-50%', y: '-50%', opacity: 1 }}
+            exit={{ scale: 0.96, x: '-50%', y: 'calc(-50% + 16px)', opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={(e) => e.stopPropagation()}
-            className="my-8 w-full max-w-2xl overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900 shadow-card"
+            className="fixed left-1/2 top-1/2 z-50 max-h-[calc(100vh-4rem)] w-[calc(100%-2rem)] max-w-2xl overflow-hidden rounded-2xl border border-slate-700/70 bg-slate-900 shadow-card focus:outline-none"
           >
             <div className="flex items-center justify-between border-b border-slate-800 px-6 py-4">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-400">
                   New listing
                 </p>
-                <h2
-                  id="create-auction-title"
-                  className="font-display text-xl font-semibold text-white"
-                >
-                  Create New Auction
-                </h2>
+                <Dialog.Title asChild>
+                  <h2 className="font-display text-xl font-semibold text-white">
+                    Create New Auction
+                  </h2>
+                </Dialog.Title>
+                <Dialog.Description className="sr-only">
+                  Fill in the details to list a new auction.
+                </Dialog.Description>
               </div>
-              <button
-                onClick={onClose}
+              <Dialog.Close
                 aria-label="Close dialog"
                 className="flex h-9 w-9 items-center justify-center rounded-xl text-slate-400 transition-colors hover:bg-slate-800 hover:text-white"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
-              </button>
+              </Dialog.Close>
             </div>
 
             <form
@@ -221,7 +225,7 @@ export const CreateAuctionModal: React.FC<CreateAuctionModalProps> = ({
                   label="Start Time"
                   name="startTime"
                   type="datetime-local"
-                  defaultValue={formData.startTime}
+                  value={formData.startTime}
                   onChange={handleChange}
                   min={getMinDateTime()}
                   icon={<Calendar className="h-4 w-4" aria-hidden="true" />}
@@ -233,7 +237,7 @@ export const CreateAuctionModal: React.FC<CreateAuctionModalProps> = ({
                   label="End Time"
                   name="endTime"
                   type="datetime-local"
-                  defaultValue={formData.endTime}
+                  value={formData.endTime}
                   onChange={handleChange}
                   min={minEndTime}
                   icon={<Calendar className="h-4 w-4" aria-hidden="true" />}
@@ -265,8 +269,8 @@ export const CreateAuctionModal: React.FC<CreateAuctionModalProps> = ({
               </Button>
             </div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }

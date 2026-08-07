@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Clock, AlertTriangle, CheckCircle2, Activity, Gavel } from 'lucide-react'
 import { AuctionStatus, Bid, BidStatus } from '../../types'
 import { apiClient } from '../../api/client'
 import { useAuthStore } from '../../store'
-import { formatCurrency, getTimeRemaining } from '../../utils'
+import { useCountdown } from '../../hooks/useCountdown'
+import { formatCurrency } from '../../utils'
 import { toast } from 'sonner'
 import { Panel } from '../ui/Panel'
 import { Button } from '../ui/Button'
@@ -13,6 +14,7 @@ import { Input } from '../ui/Input'
 import { Badge } from '../ui/Badge'
 import { Spinner } from '../ui/Spinner'
 import { EmptyState } from '../ui/EmptyState'
+import { UserName, UserAvatar } from '../ui/UserName'
 import { auctionStatusTone, auctionStatusLabel } from '../ui/auctionStatus'
 import { cn } from '../../lib/cn'
 
@@ -27,9 +29,9 @@ interface AuctionDetailViewProps {
 export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
   auctionId,
 }) => {
-  const [timeRemaining, setTimeRemaining] = useState<string>('')
   const [bidAmount, setBidAmount] = useState<number>(0)
   const { user } = useAuthStore()
+  const queryClient = useQueryClient()
 
   // Fetch auction details
   const { data: auction, isLoading: auctionLoading } = useQuery({
@@ -38,18 +40,17 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
     refetchInterval: 5000, // Poll every 5 seconds
   })
 
-  // Fetch bid history
+  // Fetch bid history. Sorted ascending by id, so the last element is the
+  // leading bid — no separate highest-bid request needed.
   const { data: bids = [] as Bid[], isLoading: bidsLoading } = useQuery({
     queryKey: ['bids', auctionId],
     queryFn: () => apiClient.getBidsByAuction(auctionId),
     refetchInterval: 3000, // Poll every 3 seconds for live updates
   })
 
-  // Fetch highest bid
-  const { data: highestBid } = useQuery({
-    queryKey: ['highest-bid', auctionId],
-    queryFn: () => apiClient.getHighestBid(auctionId),
-    refetchInterval: 3000,
+  const leadingBid = bids.length > 0 ? bids[bids.length - 1] : null
+  const timeRemaining = useCountdown(auction?.endTime, {
+    disabled: auction?.status !== AuctionStatus.ACTIVE,
   })
 
   // Place bid mutation
@@ -63,6 +64,9 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
     onSuccess: (bid) => {
       toast.success(`Bid placed successfully for ${formatCurrency(bid.amount)}`)
       setBidAmount(0)
+      queryClient.invalidateQueries({ queryKey: ['auction', auctionId] })
+      queryClient.invalidateQueries({ queryKey: ['bids', auctionId] })
+      queryClient.invalidateQueries({ queryKey: ['auctions'] })
     },
     onError: (error: any) => {
       const message =
@@ -73,28 +77,14 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
     },
   })
 
-  // Update countdown timer
-  useEffect(() => {
-    if (!auction) return
-
-    const updateCountdown = () => {
-      const remaining = getTimeRemaining(new Date(auction.endTime))
-      setTimeRemaining(remaining)
-    }
-
-    updateCountdown()
-    const interval = setInterval(updateCountdown, 1000)
-    return () => clearInterval(interval)
-  }, [auction])
-
   // Initialize bid amount
   useEffect(() => {
-    if (highestBid) {
-      setBidAmount(highestBid.amount + 1)
+    if (leadingBid) {
+      setBidAmount(leadingBid.amount + 1)
     } else if (auction) {
       setBidAmount(auction.startingPrice + 1)
     }
-  }, [highestBid, auction])
+  }, [leadingBid, auction])
 
   if (auctionLoading) {
     return (
@@ -115,12 +105,17 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
   }
 
   const isActive = auction.status === AuctionStatus.ACTIVE
+  const ended = !isActive || new Date(auction.endTime).getTime() <= Date.now()
   const userBids = bids.filter((b) => b.bidderId === user?.id) || []
   const userIsOutbid =
     userBids.length > 0 && userBids[userBids.length - 1]?.status === BidStatus.OUTBID
 
   const handlePlaceBid = () => {
-    if (bidAmount <= (highestBid?.amount || auction.currentPrice)) {
+    if (ended) {
+      toast.error('This auction has ended')
+      return
+    }
+    if (bidAmount <= (leadingBid?.amount || auction.currentPrice)) {
       toast.error('Bid must be higher than current highest bid')
       return
     }
@@ -161,7 +156,7 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
               {/* Price Section */}
               <div className="grid grid-cols-3 gap-4 border-t border-slate-700/70 pt-6">
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                     Starting Price
                   </p>
                   <p className="mt-1 text-base font-bold text-slate-300 sm:text-lg">
@@ -169,7 +164,7 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                     Current Price
                   </p>
                   <p className="mt-1 text-base font-bold text-white sm:text-lg">
@@ -177,7 +172,7 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
                   </p>
                 </div>
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                     Time Remaining
                   </p>
                   <motion.p
@@ -254,16 +249,18 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
                           aria-hidden="true"
                         />
                       )}
-                      <span
-                        className={cn(
-                          'relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border text-xs font-bold',
-                          isMine
-                            ? 'border-brand-500/50 bg-brand-gradient text-brand-950'
-                            : 'border-slate-700 bg-slate-800 text-slate-400'
-                        )}
-                      >
-                        {isMine ? 'You' : `#${bid.bidderId}`}
-                      </span>
+                      {isMine ? (
+                        <span
+                          className={cn(
+                            'relative z-10 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border text-xs font-bold',
+                            'border-brand-500/50 bg-brand-gradient text-brand-950'
+                          )}
+                        >
+                          You
+                        </span>
+                      ) : (
+                        <UserAvatar userId={bid.bidderId} />
+                      )}
                       <div
                         className={cn(
                           'flex flex-1 items-center justify-between gap-3 rounded-xl border px-4 py-3',
@@ -275,14 +272,14 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
                       >
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-white">
-                            Bidder #{bid.bidderId}
+                            <UserName userId={bid.bidderId} />
                             {isMine && (
                               <span className="ml-2 rounded-full bg-brand-500/15 px-2 py-0.5 text-[11px] font-semibold text-brand-300">
                                 You
                               </span>
                             )}
                           </p>
-                          <p className="mt-0.5 text-xs text-slate-500">
+                          <p className="mt-0.5 text-xs text-slate-400">
                             {new Date(bid.createdAt).toLocaleTimeString()}
                           </p>
                         </div>
@@ -319,14 +316,14 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
               Place Your Bid
             </h3>
 
-            {isActive ? (
+            {!ended ? (
               <>
                 <div className="rounded-xl border border-slate-700/70 bg-slate-900/50 p-4">
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500">
+                  <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
                     Minimum bid
                   </p>
                   <p className="mt-1 text-xl font-bold text-white">
-                    {formatCurrency((highestBid?.amount || auction.currentPrice) + 1)}
+                    {formatCurrency((leadingBid?.amount || auction.currentPrice) + 1)}
                   </p>
                 </div>
 
@@ -348,7 +345,7 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
                   {isBidding ? 'Placing Bid...' : 'Place Bid'}
                 </Button>
 
-                <p className="text-center text-xs leading-relaxed text-slate-500">
+                <p className="text-center text-xs leading-relaxed text-slate-400">
                   You&rsquo;ll win if no higher bid is placed before the auction ends.
                 </p>
               </>
@@ -356,10 +353,31 @@ export const AuctionDetailView: React.FC<AuctionDetailViewProps> = ({
               <div className="flex flex-col items-center py-8 text-center">
                 <CheckCircle2 className="mb-3 h-10 w-10 text-slate-500" aria-hidden="true" />
                 <p className="text-slate-400">
-                  {auction.status === AuctionStatus.CLOSED
-                    ? 'Auction has ended'
-                    : 'Auction not started yet'}
+                  {auction.status === AuctionStatus.PENDING
+                    ? 'Auction not started yet'
+                    : 'Auction has ended'}
                 </p>
+                {ended && auction.status !== AuctionStatus.PENDING && (
+                  <div className="mt-4 w-full rounded-xl border border-brand-500/25 bg-brand-500/10 p-4">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-brand-300">
+                      Winner
+                    </p>
+                    {auction.highestBidderId ? (
+                      <>
+                        <p className="mt-1 text-lg font-bold text-white">
+                          <UserName userId={auction.highestBidderId} />
+                        </p>
+                        <p className="mt-0.5 text-sm text-slate-400">
+                          Won at {formatCurrency(auction.currentPrice)}
+                        </p>
+                      </>
+                    ) : (
+                      <p className="mt-1 text-sm text-slate-400">
+                        No winning bid was placed
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </Panel>

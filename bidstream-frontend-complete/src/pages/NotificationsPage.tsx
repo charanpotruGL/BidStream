@@ -1,10 +1,7 @@
 import React from 'react'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { Bell, CheckCheck, Trash2 } from 'lucide-react'
-import { apiClient } from '../api/client'
-import { Notification } from '../types'
-import { toast } from 'sonner'
+import { useNotifications } from '../hooks/useNotifications'
 import { PageHeader } from '../components/ui/PageHeader'
 import { Button } from '../components/ui/Button'
 import { Panel } from '../components/ui/Panel'
@@ -18,38 +15,14 @@ import { cn } from '../lib/cn'
 // ============================================================================
 
 export const NotificationsPage: React.FC = () => {
-  const queryClient = useQueryClient()
-
-  const { data: notifications = [], isLoading } = useQuery({
-    queryKey: ['notifications', 'list'],
-    queryFn: () => apiClient.getMyNotifications(),
-    refetchInterval: 30000,
-  })
-
-  const refresh = () => {
-    queryClient.invalidateQueries({ queryKey: ['notifications', 'list'] })
-    queryClient.invalidateQueries({ queryKey: ['notifications', 'count'] })
-  }
-
-  const readMutation = useMutation({
-    mutationFn: (id: number) => apiClient.markNotificationAsRead(id),
-    onSuccess: refresh,
-    onError: (e: any) => toast.error(apiClient.getErrorMessage(e)),
-  })
-
-  const readAllMutation = useMutation({
-    mutationFn: () => apiClient.markAllNotificationsAsRead(),
-    onSuccess: refresh,
-    onError: (e: any) => toast.error(apiClient.getErrorMessage(e)),
-  })
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: number) => apiClient.deleteNotification(id),
-    onSuccess: refresh,
-    onError: (e: any) => toast.error(apiClient.getErrorMessage(e)),
-  })
-
-  const unreadCount = notifications.filter((n) => !n.read).length
+  const {
+    notifications,
+    unreadCount,
+    isLoading,
+    markAsRead,
+    markAllAsRead,
+    removeNotification,
+  } = useNotifications()
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-8">
@@ -59,7 +32,7 @@ export const NotificationsPage: React.FC = () => {
         description="Auction and bid activity, all in one place"
         actions={
           unreadCount > 0 ? (
-            <Button variant="secondary" size="sm" onClick={() => readAllMutation.mutate()}>
+            <Button variant="secondary" size="sm" onClick={markAllAsRead}>
               <CheckCheck className="h-4 w-4" aria-hidden="true" />
               Mark all read
             </Button>
@@ -68,7 +41,7 @@ export const NotificationsPage: React.FC = () => {
       />
 
       {isLoading ? (
-        <div className="space-y-3">
+        <div className="space-y-3" role="status" aria-label="Loading notifications">
           {[1, 2, 3].map((i) => (
             <Skeleton key={i} className="h-24" />
           ))}
@@ -81,7 +54,7 @@ export const NotificationsPage: React.FC = () => {
         />
       ) : (
         <div className="space-y-3">
-          {notifications.map((notification: Notification, index) => (
+          {notifications.map((notification, index) => (
             <motion.div
               key={notification.id}
               initial={{ opacity: 0, x: -12 }}
@@ -111,7 +84,7 @@ export const NotificationsPage: React.FC = () => {
                   <p className="mt-1 text-sm leading-relaxed text-slate-400">
                     {notification.message}
                   </p>
-                  <p className="mt-1.5 text-xs text-slate-500">
+                  <p className="mt-1.5 text-xs text-slate-400">
                     {new Date(notification.createdAt).toLocaleString()}
                   </p>
                 </div>
@@ -119,7 +92,7 @@ export const NotificationsPage: React.FC = () => {
                 <div className="flex flex-shrink-0 flex-col gap-1.5">
                   {!notification.read && (
                     <button
-                      onClick={() => readMutation.mutate(notification.id)}
+                      onClick={() => markAsRead(notification.id)}
                       className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
                     >
                       <CheckCheck className="h-3.5 w-3.5" aria-hidden="true" />
@@ -127,7 +100,7 @@ export const NotificationsPage: React.FC = () => {
                     </button>
                   )}
                   <button
-                    onClick={() => deleteMutation.mutate(notification.id)}
+                    onClick={() => removeNotification(notification.id)}
                     className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-slate-400 transition-colors hover:bg-rose-500/10 hover:text-rose-300"
                   >
                     <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />

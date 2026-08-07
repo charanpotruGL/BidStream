@@ -17,6 +17,8 @@ public class AuctionEvent {
     private Long auctionId;
     private String title;
     private Long sellerId;
+    private BigDecimal startingPrice;
+    private Long winningBidId;
     private Long winningBidderId;
     private BigDecimal finalPrice;
     private LocalDateTime startTime;

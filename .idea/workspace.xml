@@ -5,7 +5,141 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b99dce1-fa24-44bd-8cf0-4850428fad72" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/BidStream.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/BidStream.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/ApiGateway (1).iml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/ApiGateway (1).iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/copilot.data.migration.agent.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/copilot.data.migration.agent.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/GateWayconfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/GateWayconfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/filter/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/filter/RateLimitingFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/java/com/gl/app/ApiGateway/filter/RateLimitingFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/test/java/com/gl/app/ApiGateway/ApiGatewayApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/ApiGateway/ApiGateway/src/test/java/com/gl/app/ApiGateway/ApiGatewayApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/AuctionServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/AuctionServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/AuctionResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/AuctionResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/CreateAuctionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/CreateAuctionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/UpdateAuctionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/DTO/UpdateAuctionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/config/JwtConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/config/JwtConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/config/KafkaProducerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/controller/AuctionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/controller/AuctionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/event/AuctionClosedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/event/AuctionClosedEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/event/AuctionCreatedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/event/AuctionCreatedEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/event/AuctionStartedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/event/AuctionStartedEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/exception/AuctionNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/exception/AuctionNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/exception/InvalidAuctionStateException.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/exception/InvalidAuctionStateException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/model/Auction.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/model/Auction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/repository/AuctionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/repository/AuctionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/service/AuctionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/service/AuctionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/service/AuctionServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/java/com/example/service/AuctionServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AuctionService/src/test/java/com/example/AuctionServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/AuctionService/src/test/java/com/example/AuctionServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/BidProcessingServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/BidProcessingServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/DTO/BidResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/DTO/BidResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/DTO/CreateBidRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/DTO/CreateBidRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/DTO/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/DTO/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/config/KafkaConsumerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/config/KafkaConsumerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/config/KafkaProducerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/controller/BidController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/controller/BidController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/event/AuctionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/event/AuctionEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/event/BidEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/event/BidEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/AuctionNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/AuctionNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/BidNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/BidNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/InvalidBidException.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/exception/InvalidBidException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/listener/AuctionEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/listener/AuctionEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/listener/BidEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/listener/BidEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/model/Bid.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/model/Bid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/repository/BidRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/repository/BidRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/service/BidService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/service/BidService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/service/BidServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/java/com/example/service/BidServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/test/java/com/example/BidProcessingServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/BID-PROCESSING-SERVICE/src/test/java/com/example/BidProcessingServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EurekaServer/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/EurekaServer/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/DTO/CreateNotificationRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/DTO/CreateNotificationRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/DTO/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/DTO/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/DTO/NotificationResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/DTO/NotificationResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/EmailConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/EmailConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/KafkaConsumerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/KafkaConsumerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/KafkaProducerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/KafkaProducerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/controller/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/controller/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/event/AuctionEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/event/AuctionEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/event/BidEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/event/BidEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/exception/InvalidNotificationException.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/exception/InvalidNotificationException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/exception/NotificationNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/exception/NotificationNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/listener/BidEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/listener/BidEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/listener/NotificationEventListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/listener/NotificationEventListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/model/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/model/Notification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/repository/NotificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/repository/NotificationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/EmailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/EmailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/NotificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/NotificationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/java/com/example/service/NotificationServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/test/java/com/example/NotificationServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/NOTIFICATION-SERVICE/src/test/java/com/example/NotificationServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/mvnw.cmd" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/mvnw.cmd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/AuthResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/AuthResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/RegisterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/DTO/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/config/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/config/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/config/PasswordEncoderConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/config/PasswordEncoderConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/InvalidCredentialsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/InvalidCredentialsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/UserAlreadyExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/UserAlreadyExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/UserNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/exception/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/java/com/example/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/java/com/example/service/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserService/src/test/java/com/example/UserServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/UserService/src/test/java/com/example/UserServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/api/client.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/api/client.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/auction/AuctionCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/auction/AuctionCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/auction/AuctionDetailView.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/auction/AuctionDetailView.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/auction/CreateAuctionModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/auction/CreateAuctionModal.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/layout/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/layout/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/ui/Input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/components/ui/Input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/AuctionsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/AuctionsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/NotificationsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/NotificationsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/SellerHubPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/pages/SellerHubPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/store/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/src/utils/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/src/utils/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidstream-frontend-complete/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/bidstream-frontend-complete/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/api-tests-20260806-150119.log" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/api-tests-20260806-150119.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/api-tests-20260806-154311.log" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/api-tests-20260806-154311.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/api-tests.ps1" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/api-tests.ps1" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,31 +147,31 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="367" />
+    <option name="cachedIndexableFilesCount" value="559" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "charanpotruGL"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;charanpotruGL&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/charanpotruGL/BidStream.git",
-    "accountId": "417140db-00a6-4791-865f-a5f991a5ef93"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/charanpotruGL/BidStream.git&quot;,
+    &quot;accountId&quot;: &quot;417140db-00a6-4791-865f-a5f991a5ef93&quot;
   }
-}]]></component>
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3HWoW5MvyxihFpdhQTbrFZArKOB" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -55,12 +189,15 @@
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/charan.potru/Downloads/Blackbox-Bidstream/BidStream",
+    "last_opened_file_path": "C:/Users/charan.potru/Downloads/Blackbox-Bidstream/BidStream_TEST",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "ml.llm.LLMThirdPartyAiProvidersConfigurable",
     "to.speed.mode.migration.done": "true"
   }
